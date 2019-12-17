@@ -1,0 +1,69 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Sujeitos.VisualizarCaracComunsViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+
+    ViewData["Subject Data"] = _localizador["Dados do Sujeito"];
+    ViewData["Subject's ID"] = _localizador["ID Do Sujeito"];
+    ViewData["Description"] = _localizador["Descrição"];
+    ViewData["Features in common"] = _localizador["Características em comum"];
+
+    ViewData["Caption Date"] = _localizador["Data de Coleta"];
+    ViewData["*Blank data has not been captured yet!"] = _localizador["*Dados em branco ainda não foram captados!"];
+
+    ViewData["Close"] = _localizador["Fechar"];
+
+
+
+}
+
+<div class="modal fade" id="VisualizarCaraComuns" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="TituloModalLongoExemplo" style="color:black;">@ViewData["Subject Data"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+
+                <div style="margin:2%; align-content:center;">
+                    <div class="row" style="margin:2%;">
+                        <!--<div class="form-group">
+                            <label for="formGroupExampleInput">@ViewData["Subject's ID"]:</label>
+                            <input type="text" disabled="disabled" class="form-control" id="formGroupExampleInput" value="">
+                        </div>-->
+                        <div class="form-group" style="margin-left:5%;">
+                            <label for="formGroupExampleInput2"><strong>@ViewData["Description"]</strong></label>
+                            <p>@Model.DescricaoSujeito</p>
+                        </div>
+                    </div>
+
+                    <div style="text-align:center;">
+                        <h5 style="color:black;">@ViewData["Features in common"]</h5>
+                    </div>
+                    <br />
+
+                    @foreach (var item in Model.MedicaoVM)
+                    {
+                        <div class="form-group" style="margin-left:5%;">
+                            <label for="formGroupExampleInput2"><b>@item.CaractDescricao</b></label>
+
+                            <input type="text" disabled="disabled" class="form-control" id="formGroupExampleInput2" value="@item.MedicaoResultado">
+
+
+                        </div>
+                    }
+
+                </div>
+                <span style="margin:1%;color:maroon;">@ViewData["*Blank data has not been captured yet!"]</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+            </div>
+        </div>
+    </div>
+</div>

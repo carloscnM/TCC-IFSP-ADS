@@ -1,0 +1,354 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model ResearchData.Portal.Models.ViewModels.Relatorio.RelatorioDeAnaliseViewModel
+@inject IViewLocalizer _localizador
+
+
+@{
+    Layout = null;
+
+    ViewData["Reports"] = _localizador["Relatórios"];
+    ViewData["Analysis Report"] = _localizador["Relatório de Análise"];
+    ViewData["Project"] = _localizador["Projeto"];
+    ViewData["Description"] = _localizador["Descrição"];
+    ViewData["Analysis"] = _localizador["Análise"];
+    ViewData["Start date"] = _localizador["Data de início"];
+    ViewData["End date"] = _localizador["Data de Fim"];
+
+    ViewData["Analysis not completed!"] = _localizador["Análise não finalizada!"];
+    ViewData["Analysis Days"] = _localizador["Dias de análise"];
+    ViewData["Groups"] = _localizador["Grupos"];
+    ViewData["Subjects"] = _localizador["Sujeitos"];
+    ViewData["Experiments"] = _localizador["Experimentos"];
+    ViewData["Experiment"] = _localizador["Experimento"];
+
+    ViewData["Subjects by Group"] = _localizador["Sujeitos por Grupo"];
+    ViewData["Subjects by Experiment"] = _localizador["Sujeitos por Experimento"];
+    
+
+    ViewData["Total Measurements"] = _localizador["Total de Medições"];
+    ViewData["Measurements Collected"] = _localizador["Medições Coletadas"];
+    ViewData["Measurement Average by Subject"] = _localizador["Media de medições por Sujeito"];
+    ViewData["Measurement Average by Experiment"] = _localizador["Media de medições por Experimento"];
+
+
+    ViewData["Date Generated Analysis Report"] = _localizador["Relatório de Análise gerado na data"];
+
+
+    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.SujeitosPorExperimento.Select(x => x.NomeExperimento).ToList());
+    var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.SujeitosPorExperimento.Select(x => x.Sujeitos.Count()).ToList());
+
+
+    var GrupoLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.SujeitosPorgrupo.Select(x => x.GrupoNome).ToList());
+    var GrupoValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.SujeitosPorgrupo.Select(x => x.QuantidadeSujeito).ToList());
+
+}
+
+
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>RD Facility - @ViewData["Reports"]</title>
+    <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
+
+    <link href="~/css/Painel/css/typography.css" rel="stylesheet" />
+    <link href="~/css/Painel/css/default-css.css" rel="stylesheet" />
+    <link href="~/css/Painel/css/styles.css" rel="stylesheet" />
+    <link rel="shortcut icon" type="imagem/x-icon" href="~/img/LogoMarca/rdfIcon.ico" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="~/css/Painel/css/relatorio.css" rel="stylesheet" />
+
+
+</head>
+
+
+<body>
+    <div class="container">
+
+        <!--Info Básica do Projeto-->
+        <div class="row">
+            <div class="logo">
+                <img src="~/img/LogoMarca/logo.gif" alt="logo" style="margin-left:15px;" width="100" height="100">  <h1 style="font-family:'Poppins', sans-serif; float:right; margin-top:5%;">@ViewData["Analysis Report"]</h1>
+            </div>
+        </div>
+
+        <div style="border-top:groove; border-bottom:groove; height:200px;">
+            <br />
+            <div style="margin-left:2%;">
+                <h4>@ViewData["Project"]:</h4><p> @Model.DetalheProjeto.Titulo</p>
+            </div>
+
+            <div style="margin-left:2%;">
+                <h4>@ViewData["Description"]</h4><p>@Model.DetalheProjeto.Descricao</p>
+            </div>
+        </div>
+
+
+        <div style="margin-top:2%;">
+
+            <div style="margin-left:2%;">
+                <h4>@ViewData["Analysis"]:</h4> <p>@Model.DetalheAnalise.Titulo</p>
+            </div>
+            <div style="margin-left:2%;">
+                <h4>@ViewData["Description"]:</h4> <p>@Model.DetalheAnalise.Descricao</p>
+            </div>
+
+        </div>
+
+        <div>
+            <div style="margin-left:2%; float:left; width:100%;">
+                <h5>@ViewData["Start date"]:</h5><p>@Model.DetalheAnalise.DtInicio.ToString().Substring(0, Model.DetalheAnalise.DtInicio.ToString().IndexOf(" ")) </p>
+            </div>
+            @if (Model.DetalheAnalise.DtFim != null)
+            {
+                <div style="margin-left:2%; float:left; width:100%;">
+                    <h6>@ViewData["End date"]:</h6><p>@Model.DetalheAnalise.DtFim.ToString().Substring(0, Model.DetalheAnalise.DtFim.ToString().IndexOf(" "))</p>
+                </div>
+            }
+            else
+            {
+                <div style="margin-left:2%; float:left; width:100%;">
+                    <h5>@ViewData["Analysis not completed!"]</h5>
+                </div>
+            }
+        </div>
+        <br />
+        <div style="padding-bottom:8%; padding-top:5%;">
+            <div class="text-center" style="margin-left:2%; margin-top:10%; margin-bottom:2%; ">
+                <div class="row col-6" style="float:left;">
+                    <h5> @ViewData["Analysis Days"]: @Model.DetalheAnalise.QuatidadeDias </h5>
+                </div>
+                <div class="row col-6" style="margin-left:3%; float:left;">
+                    <h5 style="padding-left:65%;"> @ViewData["Subjects"]: @Model.DetalheAnalise.QuatidadeSujeito </h5>
+                </div>
+            </div>
+
+            <div class="text-center" style="margin-left:2%; margin-top:10%; margin-bottom:4%;">
+                <div class="row col-6" style="float:left;">
+                    <h5> @ViewData["Groups"]: @Model.DetalheAnalise.QuantidadeGrupo</h5>
+                </div>
+                <div class="row col-6" style="margin-left:3%; float:left;">
+                    <h5 style="padding-left:65%;"> @ViewData["Experiments"]: @Model.DetalheAnalise.QuatidadeExp</h5>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table class="table">
+                <tr>
+                    <th>@ViewData["Total Measurements"]</th>
+                    <th>@ViewData["Measurements Collected"]</th>
+                    <th>@ViewData["Measurement Average by Subject"]</th>
+                </tr>
+                @if (Model.Metricas.TotalMedicoes > 0)
+                {
+                    <tr style="text-align:center;">
+                        <td>@Model.Metricas.TotalMedicoes</td>
+                        <td>@Model.Metricas.MedicoesCaptadas</td>
+                        <td>@Convert.ToInt32(Model.Metricas.MediaMedicoesPorSujeito)</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>N/D</td>
+                        <td>N/D</td>
+                        <td>N/D</td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+        <br />
+
+
+        <div class="box-body">
+            <h4>@ViewData["Subjects by Group"]</h4>
+            <br />
+            <div class="chart-container">
+                <canvas id="chart2" style="width:600px; height:300px"></canvas>
+            </div>
+        </div>
+
+
+        <br />
+        <div class="box-body">
+
+            <h4>@ViewData["Subjects by Experiment"]</h4>
+            <br />
+            <div class="chart-container">
+                <canvas id="chart" style="width:80%; height:450px"></canvas>
+            </div>
+        </div>
+
+
+        <br />
+
+
+        <div class="footer"> @ViewData["Date Generated Analysis Report"]: @DateTime.Now </div>
+    </div>
+</body>
+
+</html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript">
+
+        $(function () {
+    var chartName = "chart2";
+        var ctx = document.getElementById(chartName).getContext('2d');
+        var data = {
+                labels: @Html.Raw(GrupoLabels),
+                datasets: [{
+                    label: "Drinks Chart",
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 0, 0)',
+                        'rgba(0, 255, 0)',
+                        'rgba(0, 0, 255)',
+                        'rgba(192, 192, 192)',
+                        'rgba(255, 255, 0)',
+                        'rgba(255, 0, 255)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 0, 0)',
+                        'rgba(0, 255, 0)',
+                        'rgba(0, 0, 255)',
+                        'rgba(192, 192, 192)',
+                        'rgba(255, 255, 0)',
+                        'rgba(255, 0, 255)'
+                    ],
+                    borderWidth: 1,
+                    data: @Html.Raw(GrupoValues)
+    }]
+            };
+
+var options = {
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            stepSize: 1,
+                            min: 0,
+                        },
+                        gridLines: {
+                            display: true,
+                            color: "rgba(255,99,164,0.2)"
+                        }
+}],
+                    xAxes: [{
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+                }
+            };
+
+       var myChart = new  Chart(ctx, {
+                options: options,
+                data: data,
+                type:'pie'
+
+            });
+        });
+</script>
+
+
+<script type="text/javascript">
+
+        $(function () {
+    var chartName = "chart";
+        var ctx = document.getElementById(chartName).getContext('2d');
+        var data = {
+                labels: @Html.Raw(XLabels),
+                datasets: [{
+                    label: "Sujeitos Por Experimento",
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 0, 0)',
+                        'rgba(0, 255, 0)',
+                        'rgba(0, 0, 255)',
+                        'rgba(192, 192, 192)',
+                        'rgba(255, 255, 0)',
+                        'rgba(255, 0, 255)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 0, 0)',
+                        'rgba(0, 255, 0)',
+                        'rgba(0, 0, 255)',
+                        'rgba(192, 192, 192)',
+                        'rgba(255, 255, 0)',
+                        'rgba(255, 0, 255)'
+                    ],
+                    borderWidth: 1,
+                    data: @Html.Raw(YValues)
+    }]
+            };
+
+var options = {
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            stepSize: 1,
+                            min: 0,
+                        },
+                        gridLines: {
+                            display: true,
+                            color: "rgba(255,99,164,0.2)"
+                        }
+}],
+                    xAxes: [{
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+                }
+            };
+
+       var myChart = new  Chart(ctx, {
+                options: options,
+                data: data,
+                type:'bar'
+
+            });
+        });
+</script>  

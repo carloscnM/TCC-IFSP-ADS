@@ -1,0 +1,14 @@
+﻿.footer {
+    background-color: transparent;
+    text-align: center;
+    bottom: 0;
+    right: 0;
+    float: right;
+    margin-right: 30px;
+    margin-bottom: 20px;
+}
+
+.footer div {
+    color: aliceblue;
+}
+

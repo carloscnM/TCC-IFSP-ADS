@@ -1,0 +1,67 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Caracteristicas.ImportarCaracteristicaViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+
+@{
+
+    ViewData["Title"] = "ImportarCaracteristicas";
+
+    ViewData["Select a File"] = _localizador["Selecione um Arquivo"];
+    ViewData["Select all"] = _localizador["Selecionar tudo"];
+    ViewData["Send"] = _localizador["Enviar"];
+    ViewData["Download Template"] = _localizador["Baixar Modelo"];
+    ViewData["* XML file only, as available template."] = _localizador["*Apenas arquivo XML, conforme modelo disponivel."];
+
+
+}
+
+<div class="container card-bordered" style="background-color:#e1e1e1;margin-top:5%;">
+    <div style="padding:2%; margin-bottom:5%;">
+        <h3>@ViewData["Select a File"]</h3>
+        <br />
+        <br />
+
+        <form class="md-form" asp-action="ImportarCaracteristicas" asp-controller="Caracteristica" enctype="multipart/form-data">
+            <div class="file-field" style="margin-top:1.5%;">
+                <div class="float-left">
+                    <span>@ViewData["Select a File"]</span>
+                    <input type="file" asp-for="ArquivoXml">
+                </div>
+            </div>
+            <div style="margin-left:5%; float:left; margin-bottom:2%;">
+                <input type="submit" class="btn btn-sm btn-success" value="@ViewData["Send"]" />
+                <a asp-action="BaixarModelo" asp-controller="Caracteristica" class="btn btn-primary">@ViewData["Download Template"]</a>
+            </div>
+            <br />
+            <div style="float:left;">
+                <span> <b>*Apenas arquivo XML, conforme modelo disponivel.</b></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="container card-bordered" style="background-color:#e1e1e1;margin-top:5%;">
+    <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left:2%;margin-top:3%;margin-bottom:3%;"></div>
+
+    @if (Model != null)
+    {
+        @if (Model.Log != null)
+        {
+
+            @if (Model.Log.Count() > 0)
+            {
+                <ul>
+                    @foreach (var item in Model.Log)
+                    {
+                        <li style="color:@item.Tipo">@item.Msg</li>
+                    }
+                </ul>
+            }
+        }
+    }
+</div>
+
+
+

@@ -1,0 +1,97 @@
+﻿@model IEnumerable<ResearchData.Portal.Models.Projetos.Negocio.Projeto>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["Title"] = _localizador["Titulo"];
+    ViewData["Description"] = _localizador["Descrição"];
+    ViewData["Criation Date"] = _localizador["Criação"];
+    ViewData["Closing"] = _localizador["Encerramento"];
+    ViewData["Actions"] = _localizador["Ações"];
+
+    ViewData["View"] = _localizador["Visualizar"];
+    ViewData["Enter"] = _localizador["Entrar"];
+    ViewData["Edit Project"] = _localizador["Editar Projeto"];
+    ViewData["Remove Project"] = _localizador["Excluir projeto"];
+    ViewData["Last Update uploaded on"] = _localizador["Última Atualização carregada em"];
+}
+
+
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+
+                <th scope="col" style="text-align:center;">
+                    @ViewData["Title"]
+                </th>
+                <th scope="col" style="text-align:center;">
+                    @ViewData["Description"]
+                </th>
+                <th scope="col" style="text-align:center;">
+                    @ViewData["Criation Date"]
+                </th>
+                <th scope="col" style="text-align:center;">
+                    @ViewData["Closing"]
+                </th>
+                <th style="text-align:center;">
+                    @ViewData["Actions"]
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    string dataCadastro = item.DataInicial.ToString().Substring(0, item.DataInicial.ToString().IndexOf(" "));
+                    string dataFinal = "";
+
+                    if(item.DataFinal != null) {
+                        dataFinal = item.DataFinal.ToString().Substring(0,item.DataFinal.ToString().IndexOf(" "));
+                    }
+
+                    <tr>
+                        <td style="text-align:center;">
+                            @Html.DisplayFor(modelItem => item.Titulo)
+                        </td>
+                        <td style="text-align:center; width:20%;">
+                                <p>@item.Descricao</p>
+                        </td>
+                        <td style="text-align:center;">
+                            @dataCadastro
+                        </td>
+                        <td style="text-align:center;">
+                           @dataFinal
+                        </td>
+
+                        <td style="text-align:center;">
+
+                            
+                                <a style="margin:1%;" asp-action="AcessarProjeto" asp-controller="Projetos" asp-route-Id="@item.Id" class="btn btn-success" data-toggle="tooltip" title="@ViewData["Enter"]">
+                                    <span class="fa fa-sign-in fa-lg" />
+                                </a>
+                                @if (item.DataFinal == null)
+                                {
+                                    <button style="margin:1%;" onclick="edit(@item.Id)" class="btn btn-warning" data-toggle="tooltip" title="@ViewData["Edit Project"]">
+                                        <span class="fa fa-edit fa-lg"></span>
+                                    </button>
+                                }
+                                <button style="margin:1%;" onclick="DeletarProjeto(@item.Id)" class="btn btn-danger" data-toggle="tooltip" title="@ViewData["Remove Project"]">
+                                    <span class="fa fa-trash fa-lg" />
+                                </button>
+                        </td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+

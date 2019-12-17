@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<ListaCaracteristicaViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Caracteristicas>
+    <Caracteristica>
+      <Id>0</Id>
+      <Descricao>Exemplo 1</Descricao>
+      <Comun>true</Comun>
+      <TipoDoDado>tstring</TipoDoDado>
+    </Caracteristica>
+    <Caracteristica>
+      <Id>0</Id>
+      <Descricao>Exemplo 2</Descricao>
+      <Comun>true</Comun>
+      <TipoDoDado>tint</TipoDoDado>
+    </Caracteristica>
+    <Caracteristica>
+      <Id>0</Id>
+      <Descricao>Exemplo 3</Descricao>
+      <Comun>true</Comun>
+      <TipoDoDado>tbool</TipoDoDado>
+    </Caracteristica>
+    <Caracteristica>
+      <Id>0</Id>
+      <Descricao>Exemplo 3</Descricao>
+      <Comun>true</Comun>
+      <TipoDoDado>tfloat</TipoDoDado>
+    </Caracteristica>
+    <Caracteristica>
+      <Id>0</Id>
+      <Descricao>Exemplo 3</Descricao>
+      <Comun>true</Comun>
+      <TipoDoDado>tdata</TipoDoDado>
+    </Caracteristica>
+    <Caracteristica>
+      <Id>0</Id>
+      <Descricao>Caracteristica Específica</Descricao>
+      <Comun>false</Comun>
+      <TipoDoDado>tdata</TipoDoDado>
+    </Caracteristica>
+  </Caracteristicas>
+</ListaCaracteristicaViewModel>

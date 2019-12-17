@@ -1,0 +1,46 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Colaborador.SairAnaliseViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["Abandon Analysis"] = _localizador["Abandonar Análise"];
+    ViewData["Do you really want to exit analysis"] = _localizador["Você deseja realmente sair da análise"];
+    ViewData["from the project"] = _localizador["do projeto"];
+    ViewData["Back"] = _localizador["Voltar"];
+    ViewData["Leave Analysis"] = _localizador["Sair da Análise"];
+}
+
+<div class="modal fade" id="SairDaAnaliseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:black;">@ViewData["Abandon Analysis"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:150px; overflow:auto;">
+                <div class="row">
+                    <div class="col-lg">
+                        <form asp-action="SairDaAnalise" asp-controller="Colaborador" method="post" id="abandorAnalise">
+                            <input type="hidden" asp-for="IdAnalise" />
+                            <div>
+                                <p style="color:darkred;">@ViewData["Do you really want to exit analysis"] <b>@Model.TituloAnalise</b> @ViewData["from the project"]<b> @Model.TituloProjeto</b> ?</pstyle="color:darkred;">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Back"]</button>
+                <button type="button" class="btn btn-danger" onclick="AbandonarAnaliseSub()">@ViewData["Leave Analysis"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function AbandonarAnaliseSub() {
+        document.forms["abandorAnalise"].submit();
+    };
+</script>

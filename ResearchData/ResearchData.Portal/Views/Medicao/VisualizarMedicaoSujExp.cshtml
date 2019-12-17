@@ -1,0 +1,62 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Medicoes.MedicaoExpViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+
+    ViewData["Experiment"] = _localizador["Experimento"];
+    ViewData["Capture Data:"] = _localizador["Data de Captação:"];
+    ViewData["Subject"] = _localizador["Sujeito"];
+    ViewData["Collected Subject Data"] = _localizador["Dados Coletados do Sujeito"];
+    ViewData["*Blank data has not been captured yet!"] = _localizador["*Dados em branco ainda não foram captado!"];
+    ViewData["Close"] = _localizador["Fechar"];
+
+
+}
+
+
+<div class="modal fade" id="DadosExpSuj" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="TituloModalLongoExemplo" style="color:black;"><b>@ViewData["Subject"]: </b>@Model.DescricaoSujeito</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+
+                <div style="margin:2%; align-content:center;">
+                    <div class="row" style="margin:2%;">
+                        <div class="form-group" style="margin-left:5%;">
+                            <label for="formGroupExampleInput2">@ViewData["Experiment"]:</label>
+                            <input type="text" disabled="disabled" class="form-control" id="formGroupExampleInput2" value="@Model.NomeExperimento">
+                        </div>
+                    </div>
+
+                    <div style="text-align:center;">
+                        <h3 style="color:black;">@ViewData["Collected Subject Data"]</h3>
+                    </div>
+                    <br />
+
+                    @foreach (var item in Model.MedicaoVM)
+                    {
+                        <div class="form-group" style="margin-left:5%;">
+                            <label for="formGroupExampleInput2"><b>@item.CaractDescricao</b></label>
+
+                            <input type="text" disabled="disabled" class="form-control" id="formGroupExampleInput2" value="@item.MedicaoResultado">
+
+                            <span class="alert">@ViewData["Capture Data:"] @item.DataCaptacao</span>
+                        </div>
+                    }
+
+                </div>
+                <span style="margin:1%;color:maroon;">@ViewData["*Blank data has not been captured yet!"]</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+            </div>
+        </div>
+    </div>
+</div>

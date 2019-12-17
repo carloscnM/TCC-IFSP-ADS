@@ -1,0 +1,57 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Projetos.DadosSimplesProjetoViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    Layout = null;
+
+    
+    ViewData["Project Opening Confirmation"] = _localizador["Confirmação de Abertura de Projeto"];
+    ViewData["Project"] = _localizador["Projeto"];
+    ViewData["Please confirm the opening of the Project."] = _localizador["Por favor, confirme a abertura do Projeto"];
+    ViewData["By opening the project it will be possible to reopen the analysis and continue collecting data. The more data you collect, the further you will get!"] = _localizador["Ao abrir o projeto será possivel reabrir as analises e continuar coletando dados. Quanto mais dados você coletar, mais longe vai chegar!"];
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Open Project"] = _localizador["Abrir Projeto"];
+}
+
+
+
+<div class="modal fade" id="AbrirProjetoM" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:black;">@ViewData["Project Opening Confirmation"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:250px;">
+                <div class="row">
+                    <div class="col-lg">
+                        <form asp-action="AbrirProjeto" asp-controller="Projetos" method="post" id="AbrirProjeto">
+                            <input type="hidden" asp-for="IdProjeto" />
+
+                            <br />
+                            <label>@ViewData["Please confirm the opening of the Project."]</label><br />
+                            <br />
+                            <b style="color:black;">@ViewData["Project"]: </b><p style="color:black;">@Model.TituloProjeto</p>
+                            <br />
+                            <p style="color:darkred;">@ViewData["By opening the project it will be possible to reopen the analysis and continue collecting data. The more data you collect, the further you will get!"]</p>
+                            <br />
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                <button type="button" class="btn btn-primary" onclick="confirmarAbrirProjeto()">@ViewData["Open Project"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmarAbrirProjeto() {
+        document.forms["AbrirProjeto"].submit();
+    };
+</script>

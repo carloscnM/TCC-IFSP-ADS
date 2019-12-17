@@ -1,0 +1,125 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+@using ResearchData.Portal.GerenciamentoUsuario
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Http.Authentication
+@using Microsoft.AspNetCore.Mvc.Localization
+@model ResearchData.Portal.Models.ViewModels.Login.LoginViewModel
+@inject SignInManager<UsuarioAplicacao> SignInManager
+@inject IViewLocalizer _localizador
+
+@{
+    Layout = "_layoutLoginRegistro";
+    ViewData["access"] = _localizador["Acessar"];
+    ViewData["password"] = _localizador["Senha"];
+    ViewData["forgetpassword"] = _localizador["Esqueceu a senha?"];
+    ViewData["enter"] = _localizador["Entrar"];
+    ViewData["register"] = _localizador["Registre-se"];
+    ViewData["enterwith"] = _localizador["Entre com o"];
+    ViewData["Remember me"] = _localizador["Lembre-me"];
+    ViewData["Terms of use"] = _localizador["Termos de uso"];
+}
+
+
+
+
+
+
+
+<div class="login-bg">
+    <div class="login-area ">
+
+        <div class="login-box ">
+            <div class="fundo">
+
+                <form asp-action="Login">
+                    <div class="login-form-head">
+                        <h4>@ViewData["access"]</h4>
+                        <div class="illustration">
+                            <div class=" js-tilt" data-tilt>
+                                <a asp-action="Index" asp-controller="Painel"><img src="~/img/LogoMarca/logo.gif" alt="logo"></a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="login-form-body">
+
+
+                        <div class="form-gp wrap-input100">
+                            <input asp-for="Email" value="" placeholder="Email" />
+                            <span class="input100"></span>
+                            <i class="fa fa-envelope"></i>
+                        </div>
+
+
+                        <div class="form-gp wrap-input100">
+                            <input asp-for="Senha" placeholder="@ViewData["password"]" />
+                            <span class="input100" data-placeholder="@ViewData["password"]"></span>
+                            <i class="fa fa-lock"></i>
+                        </div>
+
+                        <div class="row mb-2 rmber-area">
+                            <input type="checkbox" asp-for="LembreMe" style="float:left;" /><label style="margin-top:3%;">@ViewData["Remember me"]</label>
+                        </div>
+
+                        <div class="row mb-2 rmber-area">
+                            <div class="col-6">
+
+                            </div>
+                            <div class="col-6 text-right">
+                                <a asp-action="EsqueciASenha" asp-controller="Account">@ViewData["forgetpassword"]</a>
+                            </div>
+                        </div>
+
+                        <div class="submit-btn-area">
+                            <button type="submit" class="btn btn-primary "> @ViewData["enter"] </button>
+                        </div>
+
+                    </div>
+                </form>
+                <form asp-action="LoginExterno" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+
+                    @{
+                        var provedorLogin = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                        if (provedorLogin.Count > 0)
+                        {
+                            @foreach (var provedor in provedorLogin)
+                            {
+                                <div class="form-rowG" style="margin-top:2%; margin-bottom:5%;">
+                                    <a asp-action="Registrar" asp-controller="Account" class="col-lg-7 btn btn-secondary">@ViewData["register"]</a>
+                                </div>
+                                <div class="form-rowG">
+                                    <button type="submit" class="col-lg-7 btn btn-danger btn-social btn-google" name="provedor" value="@provedor.Name"> <span class="fa fa-google"></span> @ViewData["enterwith"] @provedor.Name</button>
+                                </div>
+
+                            }
+                        }
+                    }
+
+                    <div class="form-group" style="text-align:center;">
+                        <a onclick="AbrirTermoDeUso()" href="javascript:void(0)">@ViewData["Terms of use"]</a>
+                    </div>
+                </form>
+
+
+
+
+                <div style="width:30%; float:right;">
+                    <partial name="_SelecionarIdioma" />
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+<script>
+    $('.js-tilt').tilt({
+        scale: 1.1
+    })
+</script>

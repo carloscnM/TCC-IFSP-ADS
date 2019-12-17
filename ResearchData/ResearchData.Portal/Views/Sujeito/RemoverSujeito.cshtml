@@ -1,0 +1,59 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Sujeitos.NovoSujeitoViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+
+    ViewData["Remove Subject"] = _localizador["Remover Sujeito"];
+    ViewData["Subject deletion confirmation"] = _localizador["Confirmação de exclusão do sujeito"];
+    ViewData["By removing a subject from your analysis you are agreeing that all data linked to the subject will be deleted ..."] = _localizador["Ao remover um sujeito da sua análise você está concordando que será apagado todos os dados atrelados ao sujeito..."];
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Remove"] = _localizador["Remover"];
+    
+
+}
+
+<div class="modal fade" id="modalRemoverSujeito" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:black;">@ViewData["Remove Subject"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:200px;">
+                <div class="row">
+                    <div class="col-lg">
+                        <form asp-action="RemoverSujeito" asp-controller="Sujeito" method="post" id="RemoverSujeito">
+                            <div class="form-group">
+                                
+                                @ViewData["Subject deletion confirmation"] <b>@Model.Descricao</b>
+                                
+                                <br />
+                                <br />
+
+                                <div class="alert-danger">
+                                    <p>@ViewData["By removing a subject from your analysis you are agreeing that all data linked to the subject will be deleted ..."]</p>
+                                </div>
+                            </div>
+                            <input type="hidden" asp-for="ProjetoId" />
+                            <input type="hidden" asp-for="AnaliseId" />
+                            <input type="hidden" asp-for="Id" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                <button type="button" class="btn btn-danger" onclick="submitRemoverSujeito()">@ViewData["Remove"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function submitRemoverSujeito() {
+       document.forms["RemoverSujeito"].submit();
+    }
+</script>

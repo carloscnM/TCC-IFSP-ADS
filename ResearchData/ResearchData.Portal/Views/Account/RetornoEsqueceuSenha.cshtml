@@ -1,0 +1,90 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Login.NovaSenhaViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+
+    ViewData["recoverpass"] = _localizador["Recuperar Senha"];
+    ViewData["createnewpassword"] = _localizador["Criar Nova Senha"];
+    ViewData["newpassword"] = _localizador["Nova Senha"];
+    ViewData["confirmthenewpassword"] = _localizador["Confirme a nova senha"];
+    ViewData["modifypassword"] = _localizador["Alterar a senha"];
+    ViewData["request"] = _localizador["Solicitar"];
+    ViewData["Login"] = _localizador["Acessar"];
+    Layout = "~/Views/Shared/_layoutLoginRegistro.cshtml";
+
+    var alerta = 0;
+    if (ViewData["Alerta"] != null)
+    {
+        alerta = Convert.ToInt16(ViewData["Alerta"]);
+    }
+}
+
+
+<div class="login-bg">
+    <div class="login-area">
+        <div class="login-box">
+            <div class="fundo">
+                <div class="login-form-head">
+                    <h4>@ViewData["recoverpass"]</h4>
+                    <div class="illustration">
+                        <div class=" js-tilt" data-tilt>
+                            <a asp-action="Index" asp-controller="Painel"><img src="~/img/LogoMarca/logo.gif" alt="logo"></a>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <form asp-action="RetornoEsqueceuSenha" style="margin-top:25px;">
+                    <div class="container">
+                        <div class="form-gp wrap-input100">
+                            <input asp-for="NovaSenha" placeholder="@ViewData["newpassword"]" />
+                            <span asp-for="NovaSenha" class="input100"></span>
+                        </div>
+                        <div class="form-gp wrap-input100">
+                            <input asp-for="ConfirmarNovaSenha" placeholder="@ViewData["confirmthenewpassword"]" />
+                            <span asp-for="ConfirmarSenhaNova" class="input100"></span>
+                        </div>
+                        <br />
+                        @{
+                            if (alerta != 1)
+                            {
+                                <div class="form-rowG">
+                                    <button type="submit" class="btn btn-danger">@ViewData["modifypassword"]</button>
+                                </div>
+                            }
+                        }
+
+                        <input asp-for="UsuarioId" class="form-control" type="hidden" />
+                        <input asp-for="Token" class="form-control" type="hidden" />
+
+
+                        @{ if (alerta == 1)
+                            {
+                                <div class="alert alert-success" role="alert" style="margin-top:30px;">
+                                    @ViewData["Mensagem"]
+                                </div>
+                                <div class="form-rowG" style="margin-top:-30px">
+                                    <a asp-action="Login" asp-controller="Account">@ViewData["Login"]</a>
+                                </div>
+                            }
+                        }
+                    </div>
+                </form>
+
+
+                <div style="width:30%; float:right;">
+                    <partial name="_SelecionarIdioma" />
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+

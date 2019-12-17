@@ -1,0 +1,40 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Grupos.GrupoViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["Confirm group deactivation"] = _localizador["Confirmar desativação do grupo"];
+
+    ViewData["By disabling the group it will only remain in the subjects who are already castrated, the next change will not be possible to use this group!"] = _localizador["Ao desativar o grupo ele permanecerar apenas nos sujeitos que já estão castrados, na proxima alteração não será possivel mais usar este grupo!"];
+    ViewData["Deactivate"] = _localizador["Desativar"];
+    ViewData["Close"] = _localizador["Fechar"];
+}
+
+<div class="modal fade" id="DesatiarGrupoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div style="margin:3%;">
+                <div class="modal-header">
+                    <h5 style="color:black;">@ViewData["Confirm group deactivation"]:</h5>
+                </div>
+                <div class="modal-body" style="height:250px;">
+                    <form asp-action="DesativarGrupo" asp-controller="Grupo" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="ProjetoId" />
+                        <input type="hidden" asp-for="AnaliseId" />
+                        <br />
+                        <p style="color:darkred;">@ViewData["By disabling the group it will only remain in the subjects who are already castrated, the next change will not be possible to use this group!"]</p>
+                        <br />
+
+                        <p>@Model.Nome</p>
+                        <br />
+                        <br />
+
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                        <button type="submit" class="btn btn-danger">@ViewData["Deactivate"]</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

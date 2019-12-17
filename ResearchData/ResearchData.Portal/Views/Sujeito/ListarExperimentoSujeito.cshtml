@@ -1,0 +1,126 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Sujeitos.ExpDoSujeitoViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+
+    ViewData["Subject"] = _localizador["Sujeito"];
+    ViewData["Select"] = _localizador["Selecione"];
+    ViewData["Subject has no registered experiments!"] = _localizador["Sujeito não tem experimentos cadastrados!"];
+    ViewData["View"] = _localizador["Visualizar"];
+    ViewData["Capture Data"] = _localizador["Captar Dado"];
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Select an Experiment"] = _localizador["Selecione um Experimento"];
+
+    int Acesso = 0;
+
+    if (ViewBag.Acesso != null)
+    {
+        Acesso = Convert.ToInt16(ViewBag.Acesso);
+    }
+
+}
+
+
+<div class="modal fade" id="ModSelExpAcao" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:black;"><b>@ViewData["Subject"]: </b>@Model.NomeSujeito</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:180px;">
+                <form>
+                    <input type="hidden" asp-for="IdAnalise" />
+                    <input type="hidden" asp-for="IdProjeto" />
+                    <input type="hidden" asp-for="IdSujeito" />
+
+
+
+                    <hr />
+                    @if (Model.ListaExp.Count() > 0)
+                    {
+                        <div class="form-group">
+                            <label class="my-1 mr-2" for="inlineFormCustomSelectPref">@ViewData["Select an Experiment"]: </label>
+                            <select asp-for="ExperimentoId" class="custom-select my-1 mr-sm-2" id="IdExperimento">
+                                <option value="" selected>@ViewData["Select"]</option>
+                                @foreach (var item in Model.ListaExp)
+                                {
+                                    <option value="@item.Id">@item.Nome</option>
+
+                                }
+                            </select>
+                        </div>
+                    }
+                    else
+                    {
+                        <h6 style="color:maroon">@ViewData["Subject has no registered experiments!"]</h6>
+                    }
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                @if (Model.ListaExp.Count() > 0)
+                {
+                    <button type="button" class="btn btn-primary" onclick="FVisualizarDadosExp(@Model.IdSujeito)">@ViewData["View"]</button>
+                    @if (Model.AnaliseAtiva & Acesso == 2)
+                    {
+                        <button type="button" class="btn btn-danger" onclick="FCapTarDadosExp(@Model.IdSujeito, @Model.IdAnalise, @Model.IdProjeto)">@ViewData["Capture Data"]</button>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    function FVisualizarDadosExp(IdSujeito) {
+
+        var IdExperimento = document.getElementById('IdExperimento').value;
+
+        if (IdExperimento != 0) {
+
+            $("#ModSelExpAcao").attr({ "style": "display: none;" });
+            $('.modal-backdrop').hide();
+
+
+            $("#VisuDadoSujeitoExperimento").load("/Medicao/VisualizarMedicaoSujExp?IdSujeito=" + IdSujeito + "&IdExperimento=" + IdExperimento, function () {
+                $("#DadosExpSuj").modal();
+            })
+        }
+        else {
+            alert('Necessário selecionar um experimento!');
+        }
+    };
+</script>
+
+
+
+<script>
+
+    function FCapTarDadosExp(IdSujeito, IdAnalise, IdProjeto) {
+
+        var IdExperimento = document.getElementById('IdExperimento').value;
+
+        if (IdExperimento != 0) {
+
+            $("#ModSelExpAcao").attr({ "style": "display: none;" });
+            $('.modal-backdrop').hide();
+
+
+            $("#CaptarDadoSujeitoExperimento").load("/Medicao/CaptarEditarDadosExperimento?IdSujeito=" + IdSujeito + "&IdAnalise=" + IdAnalise + "&IdProjeto=" + IdProjeto + "&IdExperimento=" + IdExperimento, function () {
+                $("#CaptarEditarExperimento").modal();
+            })
+        }
+        else {
+            alert('Necessário selecionar um experimento!');
+        }
+    };
+</script>

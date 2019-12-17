@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
+
+@inject IViewLocalizer _localizador
+@inject IOptions<RequestLocalizationOptions> LocOptions
+
+
+@{
+    ViewData["language"] = _localizador["Idioma"];
+    ViewData["requestculture"] = _localizador["Escolha de idioma"];
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var cultureItems = LocOptions.Value.SupportedUICultures
+        .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
+        .ToList();
+    //var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+    //var returnUrl = Context.Request.Headers["Referer"].ToString();
+}
+
+<link rel="stylesheet" href="~/css/Projeto/SelecionarIdioma.css" type="text/css"/>
+
+<form id="selectLanguage" asp-controller="DefinirIdioma" asp-action="SelecionarLinguagem" method="post">
+    <div class="form-group row">
+        <span class="fa fa-globe fa-lg " style="float:right;margin-left:1rem; margin-top:1rem;"></span>
+        <select style="width:52%; float:right; height:41px;" class="browser-default custom-select" name="culture" onchange="this.form.submit();" asp-for="@requestCulture.RequestCulture.UICulture.Name">
+            @{foreach (var item in cultureItems)
+                {
+
+                    <option selected="@item.Selected" value="@item.Value">@item.Value</option>
+                }
+            }
+        </select>
+    </div>
+</form>

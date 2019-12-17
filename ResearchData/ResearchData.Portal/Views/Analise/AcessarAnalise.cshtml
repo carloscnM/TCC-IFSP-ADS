@@ -1,0 +1,401 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Analises.AcessoAnaliseViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+
+
+    ViewData["Title"] = "AcessarAnalise";
+    Layout = "~/Views/Shared/_LayoutPainel.cshtml";
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}?analiseId={Model.IdAnalise}&projetoId={Model.projetoId}";
+
+    ViewData["Back"] = _localizador["Voltar"];
+    ViewData["Responsible"] = _localizador["Responsável"];
+    ViewData["EndAnalysis"] = _localizador["Encerrar Análise"];
+    ViewData["ForAnalysis"] = _localizador["Análise"];
+    ViewData["NewSubject"] = _localizador["Novo sujeito"];
+    ViewData["Groups"] = _localizador["Grupos"];
+    ViewData["Experiment"] = _localizador["Experimento"];
+    ViewData["Features"] = _localizador["Características"];
+    ViewData["Comments"] = _localizador["Comentários"];
+    ViewData["GenerateReport"] = _localizador["Gerar Relatório"];
+
+    ViewData["Start date"] = _localizador["Data de Início"];
+    ViewData["Situation"] = _localizador["Situação"];
+    ViewData["Open"] = _localizador["Aberta"];
+    ViewData["Closed on date"] = _localizador["Encerrada na data"];
+    ViewData["Export Csv"] = _localizador["Exportar Csv"];
+    ViewData["Comments"] = _localizador["Comentários"];
+    ViewData["Close"] = _localizador["Fechar"];
+
+
+    ViewData["add an experiment on multiple subjects"] = _localizador["adicione um experimento em vários sujeitos"];
+    ViewData["add common features across all subjects"] = _localizador["adicione características em comum em todos os sujeitos"];
+    ViewData["reuse subjects"] = _localizador["reaproveite sujeitos"];
+    ViewData["comment your analysis"] = _localizador["comente sua análise"];
+
+    ViewData["existing subject"] = _localizador["sujeito existente"];
+    ViewData["Create a group before adding a new subject"] = _localizador["Crie um grupo antes de adicionar um novo sujeito"];
+
+
+    ViewBag.Acesso = Model.Acesso;
+
+    @if (ViewBag.MsgTelaAna != null)
+    {
+        <script>
+            $(document).ready(function () {
+                $('#ModelAvisoAcaoAna').modal('show');
+            })
+        </script>
+    }
+}
+
+
+<style>
+
+    h6, h5, h4, h3 {
+        color: white;
+    }
+
+    form {
+        margin: 0;
+        padding: 0;
+        height: 2rem;
+    }
+
+    div {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+</style>
+
+<div class="container-fluid">
+
+
+    <div style="margin-left:2%;margin-right:2%;">
+        <br />
+        <br />
+
+
+        @if (User.Identity.Name.Equals(Model.Responsavel.Email))
+        {
+            <a asp-action="AcessarProjeto" asp-controller="Projetos" asp-route-Id="@Model.projetoId" style="font-size:20pt;">
+                <h5 style="color:black;"> <span class="fa fa-chevron-left"></span>@ViewData["Back"]</h5>
+            </a>
+        }
+        else
+        {
+            <a asp-action="ListaDeAnalises" asp-controller="Colaborador" style="font-size:20pt;">
+                <h5 style="color:black;"> <span class="fa fa-chevron-left"></span>@ViewData["Back"]</h5>
+            </a>
+        }
+        <div class="breadcrumb bg-dark ">
+
+            <div style="margin-left:2%;">
+                <div><h5>@Model.TituloProjeto</h5></div><br />
+                <div><h5>@ViewData["Responsible"]: @Model.Responsavel.Nome </h5></div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class=" bg-dark" style="margin-left:2%;margin-right:2%;">
+
+        <br />
+        <div style="text-align:center;">
+            <h3>@Model.Titulo</h3>
+        </div>
+        <div style="text-align:center;color:white; margin-top:1%;">
+            <h6>@Model.Descricacao</h6>
+        </div>
+        @if (Model.Encerramento == null & User.Identity.Name.Equals(Model.Responsavel.Email))
+        {
+            <a class="btn btn-danger" style="margin-top:3%; margin-right:2%; float:right;" onclick="EncerrarAnalise(@Model.IdAnalise, @Model.projetoId)">
+                @ViewData["EndAnalysis"]
+            </a>
+        }
+        <div style="margin-top:2%; margin-left:3%;">
+            <h6><b>@ViewData["Start date"]: </b> @Model.Criacao.ToString().Substring(0, Model.Criacao.ToString().IndexOf(" "))</h6>
+        </div>
+
+        <div style="margin-top:2%; margin-left:3%; margin-bottom:2%;">
+            @if (Model.Encerramento == null)
+            {
+                <h6><b>@ViewData["Situation"]: </b>@ViewData["Open"]</h6>
+            }
+            else
+            {
+                <h6><b>@ViewData["Situation"]: </b>@ViewData["Closed on date"]: @Model.Encerramento.ToString().Substring(0, Model.Encerramento.ToString().IndexOf(" "))</h6>
+            }
+            <br />
+
+        </div>
+
+    </div>
+
+
+
+    <div style="margin-top:2%; margin-left:2%; margin-right:2%;">
+        <div class="card">
+            <div class="card-header bg-dark">
+                <h4 style="float:left;">@ViewData["ForAnalysis"]</h4>
+
+            </div>
+
+
+
+            <div class="card-body">
+                <div class="text-center justify-content-center" style="margin-left:6%; margin-right:6%">
+                    @if (Model.Encerramento == null & Model.Acesso == 2)
+                    {
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a style="margin-left:2%; float:left; width:65%; text-align:center;" class="btn btn-outline-secondary" onclick="CadastrarGrupo(@Model.IdAnalise, @Model.projetoId)" data-toggle="tooltip" title="@ViewData["Create a group before adding a new subject"]">
+                                <span class="fa fa-plus fa-lg" /> @ViewData["Groups"]
+                            </a>
+                            <br />
+                            <a class="btn btn-outline-secondary" onclick="NovoSujeito(@Model.IdAnalise, @Model.projetoId)" style="margin-top:2%; width:65%; float:left; align-content:center; margin-left:2%">
+                                <span class="fa fa-th-large fa-lg" /> @ViewData["NewSubject"]
+                            </a>
+                            <br />
+                            <a class="btn btn-outline-secondary" onclick="ReutilizacaoSujeitoFun(@Model.IdAnalise, @Model.projetoId)" style="margin-top:2%; width:65%; float:left; align-content:center; margin-left:2%" data-toggle="tooltip" title="@ViewData["reuse subjects"]">
+                                <span class="fa fa fa-recycle fa-lg" /> @ViewData["existing subject"]
+                            </a>
+                        </div>
+
+                        <div class="col-md-4">
+                            @if (Model.TemSujeito)
+                            {
+
+                                <a onclick="cadCaracSujeito(@Model.IdAnalise,@Model.projetoId)" style="width:65%; margin-left:2%;" class="btn btn-outline-secondary" data-toggle="tooltip" title="@ViewData["add common features across all subjects"]">
+                                    <span class="fa fa-caret-square-o-up fa-lg" /> @ViewData["Features"]
+                                </a>
+                                <br />
+                                <a onclick="FSelExperimento(@Model.IdAnalise,@Model.projetoId)" style="margin-left:2%;margin-top:2%;width:65%;" class="btn btn-outline-secondary" data-toggle="tooltip" title="@ViewData["add an experiment on multiple subjects"]">
+                                    <span class="fa fa-link fa-lg" /> @ViewData["Experiment"]
+                                </a>
+                            }
+                        </div>
+
+                        <div class="col-md-4">
+                            <a onclick="ListaComentariosDaAnalise(@Model.IdAnalise)" style="margin-left:2%;width:65%;" class="btn btn-outline-secondary" data-toggle="tooltip" title="@ViewData["comment your analysis"]">
+                                <span class="fa fa-link fa-lg" /> @ViewData["Comments"]
+                            </a>
+                        </div>
+                    </div>
+                    }
+
+                    
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="CadastroCobaia" style="margin-top:5%; margin-left:2%; margin-right:2%; margin-bottom:3%;">
+        @await Component.InvokeAsync("ListaDeSujeitos", new { IdAnalise = Model.IdAnalise, idProjeto = Model.projetoId })
+    </div>
+
+
+
+    <div class="text-center" style="margin-top:2%; margin-left:2%; ">
+        @if (Model.TemSujeito)
+        {
+
+            <a target="_blank" style="margin-right:2%;" asp-action="RelatorioAnalise" asp-controller="Relatorio" asp-route-IdAnalise="@Model.IdAnalise" asp-route-IdProjeto="@Model.projetoId" class="btn btn-success col-lg-2 mt-2">
+                @ViewData["GenerateReport"]
+            </a>
+
+
+            <a asp-action="RelatorioDeAnaliseAnaliticoCsv" asp-controller="Relatorio" asp-route-IdAnalise="@Model.IdAnalise" asp-route-IdProjeto="@Model.projetoId" class="btn btn-secondary col-lg-2 mt-2">
+                @ViewData["Export Csv"]
+            </a>
+
+        }
+    </div>
+
+    <br />
+    <br />
+
+
+
+</div>
+
+
+<div class="modal fade" id="ModelAvisoAcaoAna" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:black;" id="TituloModalCentralizado">Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @if (ViewBag.MsgTelaAna != null)
+                {
+                    @ViewBag.MsgTelaAna
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="DivModalCadCaraSuj">
+
+</div>
+
+<div id="VisualizarCaracteriscas">
+
+</div>
+
+
+<div id="CadastrarCaracteriscas">
+
+</div>
+
+<div id="CaptarEditarDadosDiv">
+
+</div>
+
+<div id="ModalCadastraGrupoDiv">
+
+</div>
+
+<div id="NovoSujeitoParaAnalise">
+
+</div>
+
+<div id="SelExperimento">
+
+</div>
+
+<div id="AdicionarSujeitoExp">
+
+</div>
+
+<div id="SelAcaoExpSuj">
+
+</div>
+
+<div id="VisuDadoSujeitoExperimento">
+
+</div>
+
+<div id="CaptarDadoSujeitoExperimento">
+
+</div>
+
+<div id="ComentariosDaAnalise">
+
+</div>
+
+<div id="EditarSujeito">
+
+</div>
+
+<div id="RemoverSujeito">
+
+</div>
+
+<div id="EncerrarAnalise">
+
+</div>
+
+
+<div id="ListarGruposAnalise">
+
+</div>
+
+<div id="EditarGruposAnalise">
+
+</div>
+
+<div id="DesativarGruposAnalise">
+
+</div>
+
+<div id="DivReutilizacaoSujeito">
+
+</div>
+
+
+<script>
+    function ReutilizacaoSujeitoFun(idAnalise, IdProjeto) {
+
+        $("#ModalListaGrupo").attr({ "style": "display: none;" });
+        $('.modal-backdrop').hide();
+
+
+        $("#DivReutilizacaoSujeito").load("/Sujeito/ReutilizacaoSujeito?idAnalise=" + idAnalise + "&IdProjeto=" + IdProjeto, function () {
+            $("#modalreutilizacaoSujeito").modal();
+        });
+    };
+
+</script>
+
+
+<script>
+    function EditarGruposAnalise(IdGrupo) {
+
+        $("#ModalListaGrupo").attr({ "style": "display: none;" });
+        $('.modal-backdrop').hide();
+
+
+        $("#EditarGruposAnalise").load("/Grupo/EditarGrupo?IdGrupo=" + IdGrupo, function () {
+            $("#modalEditarGrupoM").modal();
+        });
+    };
+</script>
+
+<script>
+    function DesativarGruposAnalise(IdGrupo) {
+
+        $("#ModalListaGrupo").attr({ "style": "display: none;" });
+        $('.modal-backdrop').hide();
+
+        $("#DesativarGruposAnalise").load("/Grupo/DesativarGrupo?IdGrupo=" + IdGrupo, function () {
+            $("#DesatiarGrupoModal").modal();
+        });
+    };
+</script>
+
+
+
+
+<script>
+    function ListarGruposAnalise(IdAnalise) {
+
+        $("#modalCadastroGrupo").attr({ "style": "display: none;" });
+        $('.modal-backdrop').hide();
+
+        $("#ListarGruposAnalise").load("/Grupo/ListarGruposAcoes?IdAnalise=" + IdAnalise, function () {
+            $("#ModalListaGrupo").modal();
+        });
+    };
+</script>
+
+<script>
+    function EncerrarAnalise(IdAnalise, IdProjeto) {
+        $("#EncerrarAnalise").load("/Analise/EncerrarAnalise?IdAnalise=" + IdAnalise + "&IdProjeto=" + IdProjeto, function () {
+            $("#EncerrarAnaliseM").modal();
+        });
+    };
+</script>
+
+
+<script>
+    function ListaComentariosDaAnalise(IdAnalise) {
+        $("#ComentariosDaAnalise").load("/Comentarios/Comentarios?IdAnalise=" + IdAnalise, function () {
+            $("#listarComentario").modal();
+        });
+    };
+</script>
+
+<script src="~/js/modais.js"></script>

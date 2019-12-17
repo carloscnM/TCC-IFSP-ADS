@@ -1,0 +1,56 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Analises.NovaAnaliseViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    Layout = null;
+
+    ViewData["Analysis Open Confirmation"] = _localizador["Confirmação de Abertura de Análise"];
+    ViewData["Please confirm opening of Analysis"] = _localizador["Por favor, confirme a abertura da Analise"];
+    ViewData["Project"] = _localizador["Projeto"];
+    ViewData["By opening the analysis, it will be possible to return the data collections!"] = _localizador["Ao abrir a analise , será possivel retornar as coletas de dados!"];
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Open Analysis"] = _localizador["Abrir Análise"];
+
+
+}
+
+<div class="modal fade" id="AbrirAnaliseM" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:black;">@ViewData["Analysis Open Confirmation"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:250px;">
+                <div class="row">
+                    <div class="col-lg">
+                        <form asp-action="AbrirAnalise" asp-controller="Analise" method="post" id="AbrirAnalise">
+                            <input type="hidden" asp-for="ProjetoId" />
+                            <input type="hidden" asp-for="IdAnalise" />
+                            <br />
+                            <label>@ViewData["Please confirm opening of Analysis"]</label><br />
+                            <br />
+                            <b style="color:black;">@ViewData["Project"]: </b><p style="color:black;">@Model.Titulo</p>
+                            <br />
+                            <p style="color:darkred;">@ViewData["By opening the analysis, it will be possible to return the data collections!"]</p>
+                            <br />
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                <button type="button" class="btn btn-primary" onclick="confirmarAberturaAnalise()">@ViewData["Open Analysis"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmarAberturaAnalise() {
+        document.forms["AbrirAnalise"].submit();
+    };
+</script>

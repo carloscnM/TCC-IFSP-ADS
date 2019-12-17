@@ -1,0 +1,61 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Analises.NovaAnaliseViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+
+@{
+    Layout = null;
+
+    ViewData["Analysis Deletion Confirmation"] = _localizador["Confirmação de Exclusão de Análise"];
+    ViewData["Do you really want to remove your analysis?"] = _localizador["Deseja realmente remover sua analise ?"];
+    ViewData["By confirming you are agreeing that neither you nor your contributors will be able to access this analysis again!"] = _localizador["Ao confirmar você está concordando que nem você nem seus colaboradores poderão acessar essa análise novamente!"];
+
+    ViewData["Analysis"] = _localizador["Análise"];
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Remove Analysis"] = _localizador["Remover Análise"];
+}
+
+
+
+
+
+<div class="modal fade" id="RemoverAnalise" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:black;">@ViewData["Analysis Deletion Confirmation"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:250px; overflow:auto;">
+                <div class="row">
+                    <div class="col-lg">
+                        <form asp-action="RemoverAnalise" asp-controller="Analise" method="post" id="RemoverAnalise">
+                            <input type="hidden" asp-for="IdAnalise" />
+                            <input type="hidden" asp-for="ProjetoId" />
+
+                            <h5 style="color:black;">@ViewData["Do you really want to remove your analysis?"]</h5><br />
+                            <br />
+                            <h5 style="float:left; color:black;">@ViewData["Analysis"]: @Model.Titulo</h5>
+                            <br />
+                            <br />
+                            <p style="color:darkred;">@ViewData["By confirming you are agreeing that neither you nor your contributors will be able to access this analysis again!"]</p>
+                            <br />
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                <button type="button" class="btn btn-danger" onclick="confirmarRemoverAnalise()">@ViewData["Remove Analysis"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmarRemoverAnalise() {
+        document.forms["RemoverAnalise"].submit();
+    };
+</script>

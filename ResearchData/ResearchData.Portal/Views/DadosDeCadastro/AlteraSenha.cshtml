@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model ResearchData.Portal.Models.ViewModels.DadosDeCadastro.AlterarSenhaViewModel
+@inject IViewLocalizer _localizador
+
+@{ 
+    ViewData["Title"] = "AlteraSenha";
+    Layout = "~/Views/Shared/_LayoutPainel.cshtml";
+    ViewData["currePass"] = _localizador["Senha Atual"];
+    ViewData["newPass"] = _localizador["Nova Senha"];
+    ViewData["checkNewPass"] = _localizador["Confirma a Nova Senha"];
+    ViewData["changer"] = _localizador["Alterar"];
+    ViewData["back"] = _localizador["Voltar"];
+    ViewData["Change your password"] = _localizador["Altere sua senha"];
+}
+
+
+
+
+<div class="row" style="margin-left:2%; margin-right:2%;">
+
+
+    <div class="col-md-4">
+        <h3>@ViewData["Change your password"]</h3>
+        <hr />
+        <br />
+        <form asp-action="AlteraSenha">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">@ViewData["currePass"]</label>
+                <input asp-for="SenhaAtual" class="form-control" />
+                <span asp-validation-for="SenhaAtual" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">@ViewData["newPass"]</label>
+                <input asp-for="SenhaNova" class="form-control" />
+                <span asp-validation-for="SenhaNova" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">@ViewData["checkNewPass"]</label>
+                <input asp-for="ConfirmarSenhaNova" class="form-control" />
+                <span asp-validation-for="ConfirmarSenhaNova" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@ViewData["changer"]" class="btn btn-primary" />
+            </div>
+        </form>
+        <div>
+            <a asp-action="DadosUsuario" asp-controller="DadosDeCadastro">@ViewData["back"]</a>
+        </div>
+    </div>
+   
+
+</div>
+
+

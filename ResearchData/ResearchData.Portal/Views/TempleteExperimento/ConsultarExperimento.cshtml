@@ -1,0 +1,116 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Experimentos.ConsultaExpViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+
+@{
+    ViewData["Title"] = "ConsultarExperimento";
+    Layout = "~/Views/Shared/_LayoutPainel.cshtml";
+
+    ViewData["Consult another"] = _localizador["Consultar outro"];
+
+    ViewData["Description"] = _localizador["Descrição"];
+    ViewData["Data Type"] = _localizador["Tipo de dado"];
+    ViewData["Back"] = _localizador["Voltar"];
+    ViewData["Features"] = _localizador["Caracteristicas"];
+
+    @if (ViewData["CadastroNovo"] != null)
+    {
+        <script>
+            $(document).ready(function () {
+                $('#ModalNovoCadastro').modal('show');
+            })
+        </script>
+    }
+
+}
+
+
+
+<div class="modal fade" id="ModelAvisoAcao" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:black;" id="TituloModalCentralizado">Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @if (ViewData["CadastroNovo"] != null)
+                {
+                    @ViewData["CadastroNovo"]
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Back"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="margin-left:3%; margin-right:3%; margin-top:2%;">
+    <br />
+    <h3>@Model.Nome</h3>
+
+    <hr />
+    <h5 class="card-header card-bordered">@ViewData["Description"]:</h5>
+
+    <div class="card card-bordered card-body bg-transparent">
+
+        <h5>@Model.Descricao</h5>
+
+    </div>
+    <hr />
+    <div>
+        <h4 style="margin-bottom:1%;">@ViewData["Features"]</h4>
+
+        <table class="table">
+            <thead class="bg-dark" style="color:white;">
+                <tr>
+                    <th>
+                        @ViewData["Description"]
+                    </th>
+                    <th>
+                        @ViewData["Data Type"]
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+
+        <div style="width:100%;  height:270px; overflow:auto;">
+            <table class="table">
+
+                <tbody>
+                    @foreach (var item in Model.Lista)
+                    {
+                        <tr>
+                            <td>
+                                @item.Descricao
+                            </td>
+                            <td>
+                                @item.Tipo.GetDisplayNameGlobal()
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index" asp-controller="Painel" class="btn btn-secondary" style="margin-top:2%; margin-right:2%; float:left;">@ViewData["Back"]</a>
+    </div>
+
+    <div style="margin-top:2%;margin-left:2%;color:white;">
+        <a class="btn btn-secondary" onclick="FSelConExperimento()">
+            @ViewData["Consult another"]
+        </a>
+    </div>
+
+
+
+
+</div>

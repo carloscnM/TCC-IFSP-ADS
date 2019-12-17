@@ -1,0 +1,79 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Analises.NovaAnaliseViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["New Analysis"] = _localizador["Nova Analise"];
+    ViewData["Title"] = _localizador["Título"];
+    ViewData["Description"] = _localizador["Descrição"];
+    
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Submit"] = _localizador["Cadastrar"];
+
+    ViewData["fill this field with at least 5 characters!"] = _localizador["preencha esse campo com no minimo 5 caracteres!"];
+    ViewData["Submit"] = _localizador["Cadastrar"];
+}
+
+<div class="modal fade" id="addAnalise" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:black;">@ViewData["New Analysis"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:250px; overflow:auto;">
+                <div class="row">
+                    <div class="col-lg">
+                        <form asp-action="CadastrarNovaAnalise" asp-controller="Analise" method="post" id="CadastrarAnalise">
+                            <div class="form-group">
+                                <label class="col-form-label"><b style="color:darkred;">*</b> @ViewData["Title"]</label>
+                                <input asp-for="Titulo" class="form-control" id="titulo" maxlength="250" />
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label"><b style="color:darkred;">*</b> @ViewData["Description"]</label>
+                                <textarea asp-for="Descricacao" class="form-control" maxlength="500" id="desc"></textarea>
+                            </div>
+                            <input type="hidden" asp-for="ProjetoId" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                <button type="button" class="btn btn-primary" onclick="submitformAnalise()">@ViewData["Submit"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function submitformAnalise() {
+
+
+        var nome = document.getElementById('titulo').value;
+        var desc = document.getElementById('desc').value;
+        var x = new Boolean(false);
+        var y = new Boolean(false);
+
+        if (nome.length < 5) {
+            document.getElementById('titulo').value = "";
+            document.getElementById('titulo').placeholder = '@ViewData["fill this field with at least 5 characters!"]';
+            x = false;
+        }
+        else { x = true; }
+
+        if (desc.length < 5) {
+            document.getElementById('desc').value = "";
+            document.getElementById('desc').placeholder = '@ViewData["fill this field with at least 5 characters!"]';
+        } else { y = true; }
+
+        debugger;
+
+        if (x == true && y == true) {
+            document.forms["CadastrarAnalise"].submit();
+        }
+    };
+</script>

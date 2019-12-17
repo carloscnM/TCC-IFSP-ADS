@@ -1,0 +1,271 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using ResearchData.Portal.Models.ViewModels.Painel
+@using System.Web;
+@model ResearchData.Portal.Models.ViewModels.Painel.PainelViewModel
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_LayoutPainel";
+
+    ViewData["What?! You don't have any projects yet ? Create now by clicking here !"] = _localizador["O que?! Você ainda não tem nenhum projeto ? Crie agora mesmo clicando aqui !"];
+    ViewData["Create new Project"] = _localizador["Criar novo projeto"];
+    ViewData["Joined"] = _localizador["Cadastrado em"];
+    ViewData["Recent Projects"] = _localizador["Projetos Recentes"];
+    ViewData["Overview"] = _localizador["Visão Geral"];
+    ViewData["Access"] = _localizador["Acessar"];
+
+
+    string projects; //_localizador["Projetos em Andamento"];
+    string projectseEn; //= _localizador["Projetos Encerrados"];
+    string colabora; //= _localizador["Colaborações"];
+
+    if (System.Globalization.CultureInfo.CurrentCulture.Name.Equals("pt-BR"))
+    {
+        projects = "Projetos em Andamento";
+        projectseEn = "Projetos Encerrados";
+        colabora = "Colaborações";
+    }
+    else
+    {
+        projects = "Ongoing Projects";
+        projectseEn = "Projects Closed";
+        colabora = "Collaborations";
+    }
+
+
+    var lstModelGrafico = new List<GraficoProjetoViewModel>();
+
+    lstModelGrafico.Add(new GraficoProjetoViewModel()
+    {
+        Nome = projects,
+        Quantidade = Model.QuantidadeProjetoAnd
+    });
+
+    lstModelGrafico.Add(new GraficoProjetoViewModel()
+    {
+        Nome = projectseEn,
+        Quantidade = Model.QuantidadeProjetoEnc
+    });
+
+    lstModelGrafico.Add(new GraficoProjetoViewModel()
+    {
+        Nome = colabora,
+        Quantidade = Model.QuantidadeColaboracoes
+    });
+
+
+    //var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(lstModelGrafico.Select(x => x.Nome).ToList());
+    //var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(lstModelGrafico.Select(x => x.Quantidade).ToList());
+
+    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(lstModelGrafico.Select(x => x.Nome).ToList());
+    var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(lstModelGrafico.Select(x => x.Quantidade).ToList());
+
+
+
+}
+
+<style>
+    h4, h3, h2, h1 {
+        color: white;
+    }
+
+    .card {
+        padding-left: auto;
+        padding-right: auto;
+        margin-top: 15px;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+        -webkit-transition: .25s box-shadow;
+        transition: .25s box-shadow;
+    }
+
+        .card:focus, .card:hover {
+            box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+        }
+</style>
+
+@if (User.IsInRole(PerfisPadroes.USUARIO))
+{
+    <div style="margin-left:2%; margin-right:2%;">
+        <br />
+        <div>
+            <h2 style="color:black;">@ViewData["Overview"]</h2>
+            <hr />
+        </div>
+
+        <div class="box-body">
+            <div class="chart-container" style="width:100%;">
+                <canvas width="800" height="400" id="chart"></canvas>
+            </div>
+        </div>
+
+        <div style="margin-top:5%;">
+            <h4 style="color:black;">@ViewData["Recent Projects"]</h4>
+        </div>
+
+
+        <div class="row">
+
+            @if (Model.ProjetosRecente.Any())
+            {
+
+
+                @foreach (var item in Model.ProjetosRecente)
+                {
+                    <div class="col-sm-6" style="margin-top:3%; float:right;">
+                        <div class="card">
+                            <div class="card-header bg-dark">
+                                <h3>@item.TituloProjeto</h3>
+                            </div>
+                            <div class="card-body">
+                                @ViewData["Joined"]: @item.DataCadastro.ToString().Substring(0, item.DataCadastro.ToString().IndexOf(" "))
+
+                                <a asp-action="AcessarProjeto" asp-controller="Projetos" asp-route-Id="@item.IdProjeto" style="float:right;" class="btn btn-outline-success">@ViewData["Access"]</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert-info" style="margin-top:2%;">
+                    <p>
+                        @ViewData["What?! You don't have any projects yet ? Create now by clicking here !"]
+                    </p>
+                    <br />
+                    <a asp-action="ProjetoEmAndamento" asp-controller="Projetos">
+                        @ViewData["Create new Project"]
+                    </a>
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+}
+
+<script type="text/javascript">
+
+        $(function () {
+    var chartName = "chart";
+        var ctx = document.getElementById(chartName).getContext('2d');
+        var data = {
+                labels: @Html.Raw(XLabels),
+                datasets: [{
+                    label: "Drinks Chart",
+                    backgroundColor: [
+                        'rgba(0, 200, 0, 0.2)',
+                        'rgba(255, 0, 0, 0.2)',
+                        'rgba(255,140,0, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(0,255,20,1)',
+                        'rgba(255, 0, 20, 1)',
+                        'rgba(255,140,0, 1)'
+                    ],
+                    borderWidth: 1,
+                    data: @Html.Raw(YValues)
+    }]
+            };
+
+var options = {
+    maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        display: true,
+                        ticks: {
+                            stepSize: 1,
+                            min: 0,
+
+                        },
+                        gridLines: {
+                            display: false,
+                            color: "rgba(255,99,164,0.2)"
+                        }
+}],
+                    xAxes: [{
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true,
+
+
+                        },
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+    },
+        legend: {
+            display: false,
+            position: 'right',
+            labels: {
+                padding: 5,
+                    }
+    }
+
+};
+
+
+       var myChart = new  Chart(ctx, {
+                options: options,
+                data: data,
+                type: 'bar',
+
+
+
+            });
+
+        });
+</script>
+
+<!--
+<script type="text/javascript">
+
+        $(function () {
+    var chartName = "chart";
+        var ctx = document.getElementById(chartName).getContext('2d');
+        var data = {
+                labels: @Html.Raw(XLabels),
+                datasets: [{
+                    label: "Visão Geral",
+                    backgroundColor: [
+                        'rgba(0, 200, 0, 0.2)',
+                        'rgba(255, 0, 0, 0.2)',
+                        'rgba(255,140,0, 0.2)'
+
+                    ],
+                    borderColor: [
+                        'rgba(0,255,20,1)',
+                        'rgba(255, 0, 20, 1)',
+                        'rgba(255,140,0, 1)'
+
+                    ],
+                    borderWidth: 1,
+                    data: @Html.Raw(YValues)
+    }]
+            };
+
+var options = {
+                maintainAspectRatio: false,
+    legend: {
+        display: false,
+        position: 'right',
+                    labels: {
+                        padding: 20,
+
+                    }
+                }
+
+            };
+
+       var myChart = new  Chart(ctx, {
+                options: options,
+                data: data,
+                type:'bar'
+
+            });
+        });
+</script>
+
+    -->

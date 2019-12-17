@@ -1,0 +1,87 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Login.EsqueciSenhaViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    Layout = "~/Views/Shared/_layoutLoginRegistro.cshtml";
+
+    var alerta = 0;
+    if (ViewData["Alerta"] != null)
+    {
+        alerta = Convert.ToInt16(ViewData["Alerta"]);
+    }
+
+    ViewData["verifyimbox"] = _localizador["Verifique a sua caixa de entrada."];
+    ViewData["send"] = _localizador["Enviar"];
+    ViewData["back"] = _localizador["Voltar"];
+    ViewData["Recover Password"] = _localizador["Recuperar Senha"];
+    ViewData["recoverpassword"] = _localizador["Recuperar Senha"];
+}
+
+<div class="login-bg">
+    <div class="login-area">
+        <div class="login-box">
+            <div class="fundo">
+                <div class="login-form-head">
+                    <h4>@ViewData["Recover Password"]</h4>
+                    <div class="illustration">
+                        <div class=" js-tilt" data-tilt>
+                            <a asp-action="Index" asp-controller="Painel"><img src="~/img/LogoMarca/logo.gif" alt="logo"></a>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <form asp-action="EsqueciASenha">
+                    <div class="login-form-body">
+                        <div class="form-gp wrap-input100">
+
+                            @{if (alerta == 1)
+                                {
+                                    <input asp-for="Email" value="" placeholder="Email" />
+                                }
+                                else
+                                {
+                                    <input asp-for="Email" placeholder="Email" />
+                                }
+                            }
+                            <span class="input100"></span>
+                        </div>
+                        @{if (alerta == 1)
+                            {
+
+                                <div class="alert alert-success" role="alert">
+                                    @ViewData["verifyimbox"]
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="submit-btn-area">
+                                    <input class="btn btn-primary" style="width:40%;" type="submit" value="@ViewData["send"]">
+                                </div>
+
+                            }
+                        }
+                        <div class="submit-btn-area" style="margin-top:30px">
+                            <a asp-action="Login" asp-controller="Account" style="text-decoration:none;margin-top:30px;">
+                                <input class="btn btn-secondary btn-lg " type="button" value="@ViewData["back"]" style="font-size:medium;width:40%;" />
+                            </a>
+                        </div>
+                    </div>
+                </form>
+
+                <div style="width:30%; float:right;">
+                    <partial name="_SelecionarIdioma" />
+                </div>
+
+
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+

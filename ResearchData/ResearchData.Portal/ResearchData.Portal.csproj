@@ -1,0 +1,116 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+	<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>	<UserSecretsId>965407f1-83a0-4549-8561-83244af0d9a2</UserSecretsId>	<TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>	<AssemblyName />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Views\Cobaia\**" />
+    <Compile Remove="Views\Home\**" />
+    <Compile Remove="wwwroot\lib\**" />
+    <Content Remove="Views\Cobaia\**" />
+    <Content Remove="Views\Home\**" />
+    <Content Remove="wwwroot\lib\**" />
+    <EmbeddedResource Remove="Views\Cobaia\**" />
+    <EmbeddedResource Remove="Views\Home\**" />
+    <EmbeddedResource Remove="wwwroot\lib\**" />
+    <None Remove="Views\Cobaia\**" />
+    <None Remove="Views\Home\**" />
+    <None Remove="wwwroot\lib\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\HomeController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Analise\AdicionarProjeto.cshtml" />
+    <Content Remove="Views\Shared\_AdminAcesso.cshtml" />
+    <Content Remove="Views\Shared\_Layout.cshtml" />
+    <Content Remove="Views\Shared\_LayoutPainelBakup.cshtml" />
+    <Content Remove="Views\Shared\_MenuAdministrador.cshtml" />
+    <Content Remove="Views\Shared\_MenuUsuario.cshtml" />
+    <Content Remove="Views\Shared\_UsuarioAcesso.cshtml" />
+    <Content Remove="wwwroot\css\login\style.css" />
+    <Content Remove="wwwroot\js\Painel\file.tsx" />
+    <Content Remove="wwwroot\js\Painel\jsx.jsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="modelocaracteristica.xml" />
+    <None Remove="Views\Shared\_MenuAdministrador.cshtml.mine" />
+    <None Remove="Views\Shared\_MenuAdministrador.cshtml.r61959" />
+    <None Remove="Views\Shared\_MenuAdministrador.cshtml.r61970" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="jQuery.UI.Combined" Version="1.12.1" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.9.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.9.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+	<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.0.2105168" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.8.0" />
+    <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy" Version="2.2.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" Version="0.10.0" />
+    <PackageReference Include="NWebsec.AspNetCore.Middleware" Version="2.0.0" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Design" Version="1.1.2" />
+    <PackageReference Include="SendGrid" Version="9.12.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Update="wwwroot\img\login\background2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\acionadores.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\charts.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\modais.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="wwwroot\js\Painel\js\chart-js-config.js" />
+    <None Include="wwwroot\js\Painel\js\spur.js" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <EmbeddedResource Update="Recurso\Controllers\AccountController.en-US.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Recurso\Views\Analise\AbrirAnalise.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Recurso\Views\Analise\AcessarAnalise.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="wwwroot\Arquivo\" />
+  </ItemGroup>
+
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
+
+</Project>

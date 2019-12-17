@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    var showBanner = !consentFeature?.CanTrack ?? false;
+    var cookieString = consentFeature?.CreateConsentCookie();
+
+    ViewData["Accept these cookies so you don't get hungry for content while browsing."] = _localizador["Aceite esses cookies para não ter fome de conteúdo durante a sua navegação."];
+    ViewData["Accept"] = _localizador["Aceitar"];
+
+}
+
+
+@if (showBanner)
+{
+
+    <link href="~/css/animationCookiecss.css" rel="stylesheet" />
+
+    <div id="cookieConsent" class="alert alert-info alert-dismissible fade show text-center" role="alert" style="margin-top:2%;width:50%;">
+        @ViewData["Accept these cookies so you don't get hungry for content while browsing."]
+
+        <button type="button" style="font-size:10pt" class="accept-policy btn btn-sm" data-dismiss="alert" aria-label="Close" data-cookie-string="@cookieString">
+            @ViewData["Accept"]
+        </button>
+    </div>
+    <script>
+        (function () {
+            var button = document.querySelector("#cookieConsent button[data-cookie-string]");
+            button.addEventListener("click", function (event) {
+                document.cookie = button.dataset.cookieString;
+            }, false);
+        })();
+    </script>
+
+    <script>
+        close = document.getElementById("close");
+        close.addEventListener('click', function () {
+            note = document.getElementById("note");
+            note.style.display = 'none';
+        }, false);
+    </script>
+}

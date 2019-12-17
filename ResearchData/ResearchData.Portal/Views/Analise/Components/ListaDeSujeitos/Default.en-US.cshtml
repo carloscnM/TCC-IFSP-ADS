@@ -1,0 +1,108 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Sujeitos.SujeitosComponeteViewModel
+
+
+@{
+
+    int Acesso = 0;
+
+    if (ViewBag.Acesso != null)
+    {
+        Acesso = Convert.ToInt16(ViewBag.Acesso);
+    }
+}
+
+
+<div>
+    <div style="margin-left:2%;">
+        <div style="float:left;">
+            <h5 style="color:black;">Analysis Subjects</h5>
+        </div>
+
+        <div style="float:right;">
+            <h6 style="color:black;"><b>Amount: </b> @Model.Sujeitos.Count() </h6>
+        </div>
+
+    </div>
+</div>
+<div class="table-responsive" id="listaDeProjetos">
+    <table class="table">
+        <thead style="text-align:center;">
+            <tr>
+                <th scope="col">Description </th>
+                <th scope="col">Group </th>
+                <th scope="col">Features </th>
+                <th scope="col">Experiments </th>
+                <th scope="col">Actions </th>
+            </tr>
+        </thead>
+        <tbody style="align-content:center; text-align:center; border-color:white;">
+
+            @foreach (var item in Model.Sujeitos)
+            {
+
+                <tr>
+                    <td>@item.Descricao</td>
+                    <td>@item.GrupoNome</td>
+                    <td>
+                        <button type="button" class="btn btn-secondary" onclick="VisualizarSujeitos(@item.Id)" data-toggle="tooltip" title="View ">
+                            <span class="fa fa-eye fa-lg" />
+                        </button>
+                        @if (Model.AnaliseAtiva & Acesso == 2)
+                        {
+                            <button type="submit" style="margin-left:2%;" class="btn btn-outline-secondary" onclick="CaptarEditarDados(@item.Id, @item.IdAnalise, @item.IdProjeto)" data-toggle="tooltip" title="Capture Data ">
+                                <span class="fa fa-plus-square fa-lg" />
+                                Features
+                            </button>
+                        }
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-secondary" onclick="FSelAcaoExpSuj(@item.IdAnalise, @item.IdProjeto, @item.Id)" data-toggle="tooltip" title="Add Experiment ">
+                            <span class="fa fa-flask fa-lg" />
+                            <span class="fa fa-plus" />
+                        </button>
+                    </td>
+                    <td>
+                        @if (Model.AnaliseAtiva & Acesso == 2)
+                        {
+                            <button style="margin:1%;" onclick="fnEditarSujeito(@item.Id, @Model.IdAnalise, @Model.IdProjeto)" class="btn btn-warning" data-toggle="tooltip" title="Edit ">
+                                <span class="fa far fa-edit fa-lg"></span>
+                            </button>
+                            <button style="margin:1%;" onclick="fnRemoverSujeito(@item.Id, @Model.IdAnalise, @Model.IdProjeto)" class="btn btn-danger" data-toggle="tooltip" title="Remove ">
+                                <span class="fa far fa-trash-o fa-lg"></span>
+                            </button>
+                        }
+                    </td>
+                </tr>
+
+            }
+
+        </tbody>
+
+    </table>
+</div>
+<!--
+<div class="row" style="float:left; margin-left:2%; color:chocolate;">
+    <span>The subjects are sorted by group! </span>
+</div>
+    -->
+
+
+
+<script>
+    function fnEditarSujeito(IdSujeito, IdAnalise, IdProjeto) {
+        $("#EditarSujeito").load("/Sujeito/EditarSujeito?IdSujeito=" + IdSujeito + "&IdAnalise=" + IdAnalise + "&IdProjeto=" + IdProjeto, function () {
+            $("#modalEditarSujeito").modal();
+        });
+    };
+</script>
+
+
+<script>
+    function fnRemoverSujeito(IdSujeito, IdAnalise, IdProjeto) {
+        $("#RemoverSujeito").load("/Sujeito/RemoverSujeito?IdSujeito=" + IdSujeito + "&IdAnalise=" + IdAnalise + "&IdProjeto=" + IdProjeto, function () {
+            $("#modalRemoverSujeito").modal();
+        });
+    };
+</script>
+
+<script type="text/javascript" src="~/js/acionadores.js"></script>

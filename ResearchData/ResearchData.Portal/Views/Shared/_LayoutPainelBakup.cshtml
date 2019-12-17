@@ -1,0 +1,159 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["logout"] = _localizador["Sair"];
+    var userName = "";
+    if (User.Identity.IsAuthenticated)
+    {
+        userName = User.Identity.Name;
+        userName = userName.Substring(0, userName.IndexOf("@"));
+    }
+
+    ViewData["projetoAnd"] = _localizador["Projetos em andamento"];
+    ViewData["projetoFinish"] = _localizador["Projetos finalizados"];
+    ViewData["overview"] = _localizador["Visão Geral"];
+
+}
+<style>
+    .foot {
+        width: 88%;
+        height: 8%;
+        background-color: #181F2C;
+        display: block;
+        position: absolute;
+        color: #ffffff;
+        margin-left: 12%;
+        font-family: "Nunito", sans-serif;
+        font-size: 17px;
+        margin-top: 50px;
+        margin-right: 25px;
+    }
+
+    img {
+        margin-right: 100px;
+    }
+</style>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600|Open+Sans:400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/Painel/css/spur.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
+    <script src="~/js/Painel/js/chart-js-config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
+    <title>RDF</title>
+    <link rel="shortcut icon" type="imagem/x-icon" href="~/img/LogoMarca/rdfIcon.ico" />
+</head>
+<body>
+    <div class="modal fade" id="cadastroProjeto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ops!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label=@ViewData["close"]>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @ViewData["Mensagem"]
+                    <a asp-action="ProjetoEmAndamento" asp-controller="Projetos">Acessar Projetos</a>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["close"]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container">
+        <div class="dash">
+            <div class="dash-nav dash-nav-dark">
+                <nav class="dash-nav-list">
+                    <header>
+                        <a asp-action="Index" asp-controller="Painel" class="container" style="float:left;"><img src="~/img/LogoMarca/logo.gif" style="width:60px;height:60px;" /><span style="margin-left:72px;position: absolute;top:27px;">Research Data Facility</span></a>
+                    </header>
+                    @{
+                        if (User.IsInRole(PerfisPadroes.ADMINISTRADOR))
+                        {
+                            <partial name="_MenuAdministrador" />
+                        }
+                        if (User.IsInRole(PerfisPadroes.USUARIO))
+                        {
+                            <partial name="_MenuUsuario" />
+                        }
+                    }
+                    <div style="position:center;">
+                        <partial name="_SelecionarIdioma" />
+                    </div>
+
+                </nav>
+            </div>
+            <div class="dash-app">
+                <header class="dash-toolbar">
+                    <a href="#!" class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </a>
+                    <div class="tools">
+                        <div class="dropdown tools-item">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"> <b>@userName</b></span>
+                                <img class="img-profile rounded-circle" src="~/img/login/avatarUserPadrao.png">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                                <a class="dropdown-item" asp-action="DadosUsuario" asp-controller="DadosDeCadastro">@userName</a>
+                                <a asp-action="Logout" asp-controller="Account" class="dropdown-item">@ViewData["logout"]</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </header>
+                <main class="dash-content">
+                    <div class="container-fluid" style="padding:10px;">
+                        @RenderBody()
+                        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                        <script type="text/javascript">
+                        // Load google charts
+                        google.charts.load('current', { 'packages': ['corechart'] });
+                        google.charts.setOnLoadCallback(drawChart);
+
+                        // Draw the chart and set the chart values
+                        function drawChart() {
+                            var data = google.visualization.arrayToDataTable([
+                                ['Tarefa', 'Projetos'],
+                                ['@ViewData["projetoAnd"]', 1],
+                                ['@ViewData["projetoFinish"]', 1],
+                            ]);
+
+                            // Optional; add a title and set the width and height of the chart
+                            var options = { 'title': '@ViewData["overview"]' };
+                            // Display the chart inside the <div> element with id="piechart"
+                            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                            chart.draw(data, options);
+                        }
+                        </script>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="~/js/Painel/js/spur.js"></script>
+    <script src="~/js/Idioma/site.js"></script>
+</body>
+
+</html>

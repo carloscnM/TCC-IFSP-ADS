@@ -1,0 +1,56 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Analises.NovaAnaliseViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["Edit Analysis"] = _localizador["Editar Analise"];
+    ViewData["Title"] = _localizador["Título"];
+    ViewData["Description"] = _localizador["Descrição"];
+
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Submit"] = _localizador["Alterar"];
+}
+
+<div class="modal fade" id="EditarAnalise" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:black;">@ViewData["Edit Analysis"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:250px; overflow:auto;">
+                <div class="row">
+                    <div class="col-lg">
+                        <form asp-action="EditarAnalise" asp-controller="Analise" method="post" id="EditarAnalise">
+                            <input asp-for="IdAnalise" type="hidden" />
+                            <input asp-for="ProjetoId" type="hidden" />
+                            <div class="form-group">
+                                <label class="col-form-label">@ViewData["Title"]</label>
+                                <input asp-for="Titulo" class="form-control" id="titulo" maxlength="250" />
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">@ViewData["Description"]</label>
+                                <textarea asp-for="Descricacao" class="form-control" maxlength="500" id="desc"></textarea>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                <button type="button" class="btn btn-primary" onclick="confirmarEditarAnalise()">@ViewData["Submit"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    function confirmarEditarAnalise() {
+        document.forms["EditarAnalise"].submit();
+    };
+</script>

@@ -1,0 +1,74 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Projetos.ProjetoViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["New Project"] = _localizador["Novo Projeto"];
+    ViewData["Title"] = _localizador["Titulo"];
+    ViewData["Description"] = _localizador["Descrição"];
+
+
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Submit"] = _localizador["Cadastrar"];
+    ViewData["fill this field with at least 5 characters!"] = _localizador["preencha esse campo com no minimo 5 caracteres!"];
+
+}
+
+<div class="modal fade" id="cadastrarProjeto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">@ViewData["New Project"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="CriarAlterarProjeto" method="post" id="CadastrarProjeto">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label"><b style="color:darkred;">*</b>@ViewData["Title"]:</label>
+                        <input type="text" asp-for="Titulo" class="form-control" id="recipient-name" maxlength="250">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label"><b style="color:darkred;">*</b> @ViewData["Description"]:</label>
+                        <textarea class="form-control" asp-for="Descricacao" id="message-text" maxlength="500"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                <button type="button" class="btn btn-primary" onclick="submitformNProjeto()">@ViewData["Submit"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function submitformNProjeto() {
+
+        var titulo = document.getElementById('recipient-name').value;
+        var desc = document.getElementById('message-text').value;
+        var x = new Boolean(false);
+        var y = new Boolean(false);
+
+        if ((titulo.length < 5 || titulo == "")) {
+            document.getElementById('recipient-name').value = "";
+            document.getElementById('recipient-name').placeholder = '@ViewData["fill this field with at least 5 characters!"]';
+            x = false;
+        }
+        else { x = true; }
+
+        if ((desc.length < 5 || desc == "")) {
+            document.getElementById('message-text').value = "";
+            document.getElementById('message-text').placeholder = '@ViewData["fill this field with at least 5 characters!"]';
+
+        } else { y = true; }
+
+        if (x == true && y == true) {
+            document.forms["CadastrarProjeto"].submit();
+        }
+
+    };
+
+</script>
+

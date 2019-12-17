@@ -1,0 +1,188 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    Layout = null;
+
+
+    ViewData["Report Title"] = _localizador["Titulo do Relatório"];
+    ViewData["Responsible"] = _localizador["Responsavel"];
+    ViewData["Collaborators"] = _localizador["Colaboradores"];
+
+    ViewData["Project"] = _localizador["Projeto"];
+    ViewData["Description"] = _localizador["Descrição"];
+    ViewData["Analysis"] = _localizador["Análise"];
+    ViewData["Start date"] = _localizador["Data de início"];
+    ViewData["End date"] = _localizador["Data de Fim"];
+    
+
+  
+
+    ViewData["Subjects Used"] = _localizador["Sujeitos Utilizados"];
+    ViewData["Name"] = _localizador["Nome"];
+    ViewData["Group"] = _localizador["Grupo"];
+    ViewData["Experiment"] = _localizador["Experimento"];
+
+    ViewData["Characteristics of each Subject"] = _localizador["Características de cada Sujeito"];
+
+
+}
+
+<!DOCTYPE html>
+
+<style>
+    .page-container {
+        width: 100%;
+        height: 100%;
+        min-height: 100vh;
+        padding-left: 280px;
+        -webkit-transition: padding-left 0.3s ease 0s;
+        transition: padding-left 0.3s ease 0s;
+    }
+
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+</style>
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>RelatorioDeProjeto</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Researc Data Facility</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="imagem/x-icon" href="~/img/LogoMarca/rdfIcon.ico" />
+
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.7.8/metisMenu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/slicknav.min.css">
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="breadcrumb">
+            <div class="container">
+                <h2 align="center">@ViewData["Report Title"]</h2>
+
+                <h5>@ViewData["Responsible"]: irineu</h5>
+                <h5>@ViewData["Collaborators"]: asdasd,adasdas,asdasd,asdasd</h5>
+                <h5>@ViewData["Start date"]:</h5>
+                <h5>@ViewData["End date"]:</h5>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div>
+                <h3>@ViewData["Description"]</h3>
+                <p align="justify">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend leo non facilisis tristique. Sed laoreet
+                    neque id ipsum volutpat, in semper turpis malesuada. Sed aliquet scelerisque nibh, fermentum rhoncus felis mattis et. Proin ultricies,
+                    lectus vel efficitur condimentum, metus ipsum sollicitudin arcu, sollicitudin facilisis diam eros molestie leo. Aenean mauris dui, sollicitudin
+                    ac lorem sed, commodo lacinia nisl. Praesent blandit gravida elit, ut suscipit felis congue rhoncus. Sed eu tortor ut nisi eleifend vulputate a
+                    eu mi. Sed libero nunc, vestibulum et aliquet at, convallis a neque. Aenean facilisis, orci egestas maximus elementum, lectus purus blandit metus,
+                    et placerat massa purus eu purus. Sed dignissim erat eget velit semper posuere.
+                    Proin condimentum nulla eu faucibus luctus. Mauris eu dui dolor. Phasellus mollis et velit vitae accumsan. Nunc rutrum sollicitudin consequat.
+                </p>
+
+            </div>
+
+            <div class="card">
+                <h4>@ViewData["Subjects Used"]</h4>
+            </div>
+
+            <table class="table table-bordered table-responsive-sm">
+                <tbody>
+                    <tr>
+
+                        <th scope="col">@ViewData["Name"]</th>
+                        <th scope="col">@ViewData["Group"]</th>
+
+                        <th scope="col">@ViewData["Experiment"]</th>
+                    </tr>
+                    <tr>
+
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+
+            <br>
+            <div class="card">
+                <h4>@ViewData["Characteristics of each Subject"]</h4>
+            </div>
+            <table class="table table-bordered table-responsive-sm">
+                <tbody>
+                    <tr>
+                        <th scope="col">Nome do Sujeito</th>
+                        <th scope="col">Grupo</th>
+                        <th scope="col">CHIP</th>
+                        <th scope="col">Obito</th>
+                        <th scope="col">Data de Nascimento</th>
+                        <th scope="col">Codigo</th>
+                        <th scope="col">Fumante ?</th>
+                        <th scope="col">Cor do Cabelo</th>
+                        <th scope="col">Tipo sanguíneo</th>
+
+                    </tr>
+                    <tr>
+
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <img src="chart.png" width="100%" height="100%">
+
+
+        </div>
+
+
+
+
+    </div>
+
+</body>
+
+
+</html>

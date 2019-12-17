@@ -1,0 +1,23 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+
+@{
+    ViewData["administrator"] = _localizador["Administrador"];
+    ViewData["newadministrator"] = _localizador["Novo Administrador"];
+    ViewData["manageusers"] = _localizador["Gerenciar Usuários"];
+    ViewData["newarea"] = _localizador["Nova Área"];
+    ViewData["system"] = _localizador["Sistema"];
+    ViewData["profile"] = _localizador["Perfil"];
+    ViewData["projects"] = _localizador["Projetos"];
+    ViewData["areas"] = _localizador["Áreas"];
+    ViewData["systemversion"] = _localizador["Versão do sistema"];
+    ViewData["exit"] = _localizador["Sair"];
+    ViewData["finishsession"] = _localizador["Finalizar sessão"];
+    ViewData["configuration"] = _localizador["Configuração"];
+    ViewData["informations"] = _localizador["Informações"];
+
+}
+

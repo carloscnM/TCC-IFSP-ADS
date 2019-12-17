@@ -1,0 +1,128 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+@using ResearchData.Portal.GerenciamentoUsuario
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Http.Authentication
+@using Microsoft.AspNetCore.Mvc.Localization
+@model ResearchData.Portal.Models.ViewModels.DadosDeCadastro.CriarSenhaViewModel
+@inject SignInManager<UsuarioAplicacao> SignInManager
+@inject IViewLocalizer _localizador
+
+@{
+    Layout = "_layoutLoginRegistro";
+    ViewData["password"] = _localizador["Senha"];
+    ViewData["Confirm Password"] = _localizador["Confirmar Senha"];
+    ViewData["create"] = _localizador["Criar"];
+    ViewData["mathPass"] = _localizador["As senhas são diferentes"];
+    ViewData["Skip"] = _localizador["Pular"];
+
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>RD Facility</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.7.8/metisMenu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/slicknav.min.css">
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+
+    <link href="~/css/Painel/css/themify-icons.css" rel="stylesheet" />
+    <link href="~/css/Painel/css/typography.css" rel="stylesheet" />
+    <link href="~/css/Painel/css/default-css.css" rel="stylesheet" />
+    <link href="~/css/login/styles.css" rel="stylesheet" />
+    <link href="~/css/Painel/css/responsive.css" rel="stylesheet" />
+
+    <link rel="shortcut icon" type="imagem/x-icon" href="~/img/LogoMarca/rdfIcon.ico" />
+
+</head>
+
+    <body class="login-area login-bg">
+        <div class="container">
+            <div class="login-box ptb--80 ">
+                <div class="fundo">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <form asp-action="CriarSenha">
+                        <div class="login-form-head">
+                            <h4>Criar Senha</h4>
+                            <div class="illustration">
+                                <div class=" js-tilt" data-tilt>
+                                    <a asp-action="Index" asp-controller="Painel"><img src="~/img/LogoMarca/logo.gif" alt="logo"></a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="login-form-body">
+                            <div class="form-row">
+                                <label class="input">@User.Identity.Name</label>
+                            </div>
+                            <div class="form-gp wrap-input100">
+                                <input asp-for="Senha" placeholder="@ViewData["password"]" />
+                                <span class="input100"></span>
+                            </div>
+                            <div class="form-gp wrap-input100">
+                                <input asp-for="CompararSenha" placeholder="@ViewData["Confirm Password"]" />
+                                <span class="input100"></span>
+                            </div>
+                            @{
+                                if (ViewData["senhaDif"] != null)
+                                {
+                                    <span class="text-danger">@ViewData["senhaDif"]</span>
+                                }
+                            }
+                            <div class="form-row"><button class="btn btn-primary btn-block" type="submit">@ViewData["create"]</button></div>
+
+                            
+                            <div class="form-row"><button class="mt-2 btn btn-success" asp-action="Index" asp-controller="Painel" type="submit">@ViewData["Skip"]</button></div>
+                        </div>
+                    </form>
+
+                    <div style="width:30%; float:right;">
+                        <partial name="_SelecionarIdioma" />
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+
+    
+
+
+
+
+
+    <!-- bootstrap 4 js -->
+    <script src="~/js/Painel/js/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.7.8/metisMenu.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/slicknav.min.css"></script>
+
+
+    <script src="~/js/Painel/js/plugins.js"></script>
+    <script src="~/js/Painel/js/scripts.js"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/login/Loginv2.js"></script>
+    <script src="~/js/Idioma/site.js"></script>
+    <script src="~/js/login/tilt/tilt.jquery.min.js"></script>
+    <script src="~/js/login/script.js"></script>
+
+</body>
+</html>

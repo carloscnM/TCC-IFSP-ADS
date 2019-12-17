@@ -1,0 +1,332 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutPainel.cshtml";
+}
+
+<link href="~/css/NovaPasta/StyleSobre.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+
+<style>
+
+    .card {
+        padding-left: auto;
+        padding-right: auto;
+        margin-top: 15px;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+        -webkit-transition: .25s box-shadow;
+        transition: .25s box-shadow;
+    }
+
+        .card:focus, .card:hover {
+            box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+        }
+</style>
+
+<!-- Page Content -->
+<div class="container">
+    @if (System.Globalization.CultureInfo.CurrentCulture.Name.Equals("pt-BR"))
+    {
+        <h1 class="my-4">Sobre a Research Data Facility</h1>
+
+        <!-- Marketing Icons Section -->
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <h4 class="card-header">Temos o melhor time !</h4>
+                    <div class="card-body">
+                        <p class="card-text" align="justify">Nosso time é composto por cinco estudantes do Instituto Federal de São Paulo.</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <h4 class="card-header">As melhores tecnologias!</h4>
+                    <div class="card-body">
+                        <p class="card-text" align="justify">A plataforma foi desenvolvida utilizando as mais recentes tecnologias do mercado. Trabalhamos com C#, AWS e toda nossa estrutura é em Docker.</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <h4 class="card-header">Os melhores projetos!</h4>
+                    <div class="card-body">
+                        <p class="card-text" align="justify">Somente os mais engajados na área acadêmica pisam nessas terras. Temos os melhores mestres!</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <h1 class="my-4">About Research Data Facility</h1>
+
+        <!-- Marketing Icons Section -->
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <h4 class="card-header">We have the best team</h4>
+                    <div class="card-body">
+                        <p class="card-text" align="justify">Our team consists of 5 students from the Federal Institute of São Paulo.</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <h4 class="card-header">The best technologies</h4>
+                    <div class="card-body">
+                        <p class="card-text" align="justify">This platform was developed using the latest technologies in the market! We work with C #, AWS and our entire structure is in Docker.</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <h4 class="card-header">The best projects</h4>
+                    <div class="card-body">
+                        <p class="card-text" align="justify">Only the most engaged in academia step on these lands! We have the best masters.</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+
+    <script>
+        $('.carousel').carousel({
+            interval: 50
+        })
+    </script>
+    <div class="container-fluid">
+        
+            <h2 class="text-center mb-3" style="margin-top:3%;">Nossa Equipe</h2>
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner row w-100 mx-auto">
+                    <div class="carousel-item col-md-4 active">
+                        <div class="card" style="height:97%; overflow: hidden;">
+                            <img class="card-img-top" src="~/img/NovaPasta/Brunno Lemes.jpeg" alt="">
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a href="#">Brunno Lemmes</a>
+                                </h4>
+                                @if (System.Globalization.CultureInfo.CurrentCulture.Name.Equals("pt-BR"))
+                                {
+                                    <p class="card-text" align="justify">
+                                        tem 27 anos, é mestre em Ciências e atualmente doutorando pela
+                                        Universidade Federal de São Paulo, possui experiências em projetos acadêmicos e
+                                        gerenciamento de grupo, plataformas digitais de ensino a distância e docência em
+                                        ensino básico e superior.
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="card-text" align="justify">
+                                        is 27 years old, has a master's degree in science and is currently a doctoral
+                                        Federal University of São Paulo, has experience in academic projects and
+                                        group management, digital distance learning platforms and
+                                        basic and higher education.
+                                    </p>
+                                }
+                            </div>
+                    </div>
+                </div>
+                <div class="carousel-item col-md-4">
+                    <div class="card" style="height:97%; overflow: hidden;">
+                        <img class="card-img-top" src="~/img/NovaPasta/Carlos Mario.jpeg" alt="">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#">Carlos Mario</a>
+                            </h4>
+                            @if (System.Globalization.CultureInfo.CurrentCulture.Name.Equals("pt-BR"))
+                            {
+                                <p class="card-text" align="justify">
+                                    tem 20 anos atualmente trabalhando com Teste de Software no ramo
+                                    bancário, experiência com Sql Server, conhece algumas tecnologias como, C# +
+                                    ASP .NET Core e ORM Entity Framework Core e O Identity.
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="card-text" align="justify">
+                                    is 20 years old currently working with Software Testing in the field
+                                    banking, experience with Sql Server, know some technologies like, C # +
+                                    ASP .NET Core and ORM Entity Framework Core and Identity.
+                                </p>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item col-md-4">
+                    <div class="card" style="height:97%; overflow: hidden;">
+                        <img class="card-img-top" src="~/img/NovaPasta/Leonardo Farias.jpeg" alt="">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#">Leonardo Leite</a>
+                            </h4>
+                            @if (System.Globalization.CultureInfo.CurrentCulture.Name.Equals("pt-BR"))
+                            {
+                                <p class="card-text" align="justify">
+                                    tem 19 anos, atuante na área de Suporte a área fiscal e financeira
+                                    do sistema SAP, possui Experiência com ERP em indústria do ramo alimentício, e
+                                    desenvolvimento de dashboards e KPI’s;
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="card-text" align="justify">
+                                    is 19 years old, working in the Tax and Financial Support area.
+                                    SAP system, has experience with ERP in the food industry, and
+                                    dashboards and KPI's development;
+                                </p>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item col-md-4">
+                    <div class="card" style="height:97%; overflow: hidden;">
+                        <img class="card-img-top" src="~/img/NovaPasta/Mateus Roncon.jpeg" alt="">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#">Mateus Roncon</a>
+                            </h4>
+                            @if (System.Globalization.CultureInfo.CurrentCulture.Name.Equals("pt-BR"))
+                            {
+                                <p class="card-text" align="justify">
+                                    tem 20 anos, Analista de TI jr. na B2W, possui experiência com WebCrawler,
+                                    testes de automatização com Selenium, scripts em python,
+                                    conhecimento com ferramentas Business Intelligence, linguagens como Java, C#,
+                                    PHP, banco de dados e front-end;
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="card-text" align="justify">
+                                    is 20 years old, IT Analyst jr. at B2W, has experience with WebCrawler,
+                                    automation tests with Selenium, python scripts,
+                                    Business Intelligence tools, languages such as Java, C #,
+                                    PHP, database and front end;
+                                </p>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item col-md-4">
+                    <div class="card" style="height:97%; overflow: hidden;">
+                        <img class="card-img-top" src="~/img/NovaPasta/Rodrigo dos Santos.jpeg" alt="">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#">Rodrigo Santos</a>
+                            </h4>
+                            @if (System.Globalization.CultureInfo.CurrentCulture.Name.Equals("pt-BR"))
+                            {
+                                <p class="card-text" align="justify">
+                                    tem 26 anos, atuante na área da Segurança da Informação no ramo
+                                    bancário realizando análise de código das diversas aplicações produzidas para o
+                                    banco, verificando se as mesmas são aptas a incorporar a produtos novos ou já
+                                    existentes.
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="card-text" align="justify">
+                                    is 26 years old, working in the area of Information Security in the field
+                                    performing code analysis of the various applications produced for the
+                                    checking whether they are able to incorporate into new or existing products
+                                    existing.
+                                </p>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- /.row -->
+    <!-- Features Section -->
+    <div class="row" style="margin-top:5%;">
+        <div class="col-lg-6">
+            @if (System.Globalization.CultureInfo.CurrentCulture.Name.Equals("pt-BR"))
+            {
+
+                <h2>Qual o nosso propósito?</h2>
+                <p style="margin-top:2%;">Nosso objeto segue uma lista que ainda cresce: </p>
+                <div style="margin-top:3%;">
+                    <ul>
+                        <li style="margin-bottom:2%;"><span class="fa fa-circle lg"></span> Facilitar o armazenamento e organização de dados de pesquisa;</li>
+                        <li style="margin-bottom:2%;"><span class="fa fa-circle lg"></span> Prover um ambiente colaborativo para as análises;</li>
+                        <li style="margin-bottom:2%;"><span class="fa fa-circle lg"></span> Expor visualmente os dados cadastrados;</li>
+                        <li style="margin-bottom:2%;"><span class="fa fa-circle lg"></span> Fácil exportação dos dados cadastrados para outras plataformas.</li>
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <h2>What is our purpose?</h2>
+                <p style="margin-top:2%;">Our object follows a still growing list: </p>
+                <div style="margin-top:3%;">
+                    <ul>
+                        <li style="margin-bottom:2%;"><span class="fa fa-circle lg"></span> To facilitate the storage and the organization of the research data;</li>
+                        <li style="margin-bottom:2%;"><span class="fa fa-circle lg"></span> To promote a colaborative enviroment for the analysis;</li>
+                        <li style="margin-bottom:2%;"><span class="fa fa-circle lg"></span> To visually expose the registered data; </li>
+                        <li style="margin-bottom:2%;"><span class="fa fa-circle lg"></span> To ease the exportation of registered data to others softwares.</li>
+                    </ul>
+                </div>
+            }
+        </div>
+        <div class="col-lg-6">
+            <img class="img-fluid rounded" src="~/img/login/backg.png" alt="">
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <hr>
+
+    <!-- Call to Action Section -->
+
+
+</div>
+
+
+<!-- Bootstrap core JavaScript -->
+
+
+<script>
+    $(document).ready(function () {
+        $("#myCarousel").on("slide.bs.carousel", function (e) {
+            var $e = $(e.relatedTarget);
+            var idx = $e.index();
+            var itemsPerSlide = 3;
+            var totalItems = $(".carousel-item").length;
+
+            if (idx >= totalItems - (itemsPerSlide - 1)) {
+                var it = itemsPerSlide - (totalItems - idx);
+                for (var i = 0; i < it; i++) {
+                    // append slides to end
+                    if (e.direction == "left") {
+                        $(".carousel-item")
+                            .eq(i)
+                            .appendTo(".carousel-inner");
+                    } else {
+                        $(".carousel-item")
+                            .eq(0)
+                            .appendTo($(this).find(".carousel-inner"));
+                    }
+                }
+            }
+        });
+    });
+
+</script>
+
+
+

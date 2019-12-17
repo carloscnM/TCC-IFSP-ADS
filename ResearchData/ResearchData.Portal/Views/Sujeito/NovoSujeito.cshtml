@@ -1,0 +1,90 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Sujeitos.NovoSujeitoViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+
+
+    ViewData["Subject register"] = _localizador["Cadastrar Sujeito"];
+    ViewData["Name"] = _localizador["Nome"];
+    ViewData["Select a Group"] = _localizador["Selecione um Grupo"];
+    ViewData["Select"] = _localizador["Selecione"];
+
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Submit"] = _localizador["Cadastrar"];
+    ViewData["fill this field with at least 5 characters!"] = _localizador["preencha esse campo com no minimo 5 caracteres!"];
+    ViewData["Select a Group !"] = _localizador["Selecione um Grupo !"];
+
+}
+
+
+
+<div class="modal fade" id="modalCadastroSujeito" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:black;">@ViewData["Subject register"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:250px;">
+                <div class="row">
+                    <div class="col-lg">
+                        <form asp-action="NovoSujeito" asp-controller="Sujeito" method="post" id="CadastrarSujeito">
+                            <div class="form-group">
+                                <label class="col-form-label">@ViewData["Name"]:</label>
+                                <input asp-for="Descricao" class="form-control" id="nome" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">@ViewData["Select a Group"]</label>
+                                <select class="form-control" style="height:41px;" asp-for="GrupoId" id="grupo">
+                                    <option selected="selected" value="" >@ViewData["Select"]</option>
+                                    @foreach (var item in Model.Grupos)
+                                    {
+                                        <option value="@item.Id">@item.Nome</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <input type="hidden" asp-for="ProjetoId" />
+                            <input type="hidden" asp-for="AnaliseId" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                <button type="button" class="btn btn-primary" onclick="submitformSujeito()">@ViewData["Submit"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function submitformSujeito() {
+
+        var nome = document.getElementById('nome').value;
+        var grupo = document.getElementById('grupo').value;
+        var x = new Boolean(false);
+        var y = new Boolean(false);
+
+        if ((nome = "" || nome < 5)) {
+            document.getElementById('nome').placeholder = '@ViewData["fill this field with at least 5 characters!"]';
+            x = false;
+        }
+        else { x = true; }
+
+        if (grupo == "") {
+            alert('@ViewData["Select a Group !"]');
+            y = false;
+        }
+        else { y = true; }
+
+
+        if (x == true && y == true) {
+            document.forms["CadastrarSujeito"].submit();
+        }
+    }
+</script>

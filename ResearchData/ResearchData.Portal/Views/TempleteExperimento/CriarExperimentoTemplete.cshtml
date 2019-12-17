@@ -1,0 +1,123 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Experimentos.CriarTempleteViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    Layout = "~/Views/Shared/_LayoutPainel.cshtml";
+
+    ViewData["An error occurred during registration. Try again!"] = _localizador["Ocorreu um erro durante o cadastro tente novamente!"];
+    ViewData["Experiment Template Registration"] = _localizador["Cadastro de Template de  Experimento"];
+    ViewData["Name"] = _localizador["Nome"];
+    ViewData["Type"] = _localizador["Tipo"];
+    ViewData["Description"] = _localizador["Descrição"];
+    ViewData["Specific features"] = _localizador["Características Específicas"];
+    ViewData["Submit"] = _localizador["Cadastrar"];
+
+}
+
+<!DOCTYPE html>
+
+
+<div style="margin:3%;">
+    @if (ViewBag.CadatroSucesso != null)
+    {
+        if (ViewBag.CadatroSucesso)
+        {
+            <div class="alert alert-success" role="alert">
+                Cadastro Realizado com sucesso!
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                <p>@ViewData["An error occurred during registration. Try again!"]</p>
+                @if (ViewBag.SemCaracteristica != null)
+                {
+                    <p>@ViewBag.SemCaracteristica</p>
+                }
+                <br />
+            </div>
+        }
+    }
+</div>
+
+<div style="margin-left:3%; margin-right:3%;">
+
+    <h3>@ViewData["Experiment Template Registration"]</h3>
+
+    <hr />
+
+
+    <form asp-action="CriarExperimentoTemplete" asp-controller="TempleteExperimento" method="post">
+
+        <div class="row" style="margin-left:2%;">
+            <div style="width:50%;">
+                <h5><b style="color:red;">*</b> @ViewData["Name"]: </h5>
+                <input asp-for="Nome" class="form-control" />
+
+                <br />
+                <h5>@ViewData["Description"]:</h5>
+                <input asp-for="Descricao" type="text" class="form-control" />
+            </div>
+        </div>
+
+
+
+        <br />
+        <hr />
+        <br />
+        <div style="align-content:center">
+            <h4><b style="color:red;">*</b> @ViewData["Specific features"]</h4>
+        </div>
+        <br />
+        <table class="table table-bordered ">
+            <thead>
+                <tr class="bg-dark" style="color:white;">
+                    <td style="width:49%;">@ViewData["Name"]</td>
+                    <td>@ViewData["Type"]</td>
+                </tr>
+            </thead>
+        </table>
+        <div style="width:100%;  height:270px; overflow:auto;">
+            <table class="table table-bordered table-responsive-sm" style="table-layout: fixed; border-collapse: collapse;">
+                <tbody>
+
+                    @for (int i = 0; i < Model.Caracteristicas.Count; i++)
+                    {
+
+                        <tr>
+                            <td>
+
+                                <div class="row" style="margin-left:3%;">
+                                    <div style="margin-bottom:1%;">
+                                        @Html.CheckBoxFor(model => model.Caracteristicas[i].IsChecked)
+                                    </div>
+                                    <div style="margin-top:1.5%;">
+                                        @Model.Caracteristicas[i].Descricao
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    @Model.Caracteristicas[i].Tipo.GetDisplayNameGlobal()
+                                </div>
+                            </td>
+                            @Html.HiddenFor(model => model.Caracteristicas[i].CaracteristicaId)
+                            @Html.HiddenFor(model => model.Caracteristicas[i].Descricao)
+                        </tr>
+
+
+
+                    }
+
+                </tbody>
+
+            </table>
+        </div>
+
+        <div style="margin-top:3%;">
+            <input type="submit" class="btn btn-success" value="@ViewData["Submit"]" />
+        </div>
+
+    </form>
+</div>

@@ -1,0 +1,359 @@
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
+@import "https://fonts.googleapis.com/css?family=Open+Sans";
+
+
+@media only screen and (max-device-width:400px) and (max-device-width:600px) {
+
+
+    .pagina {
+        max-width: 600px;
+        max-height: 400px;
+        background-size: cover;
+        position: relative;
+    }
+
+    }
+
+
+@media only screen and (max-device-width: 900px) {
+    .pagina {
+        max-width: 900px;
+        background-size: cover;
+        position: relative;
+    }
+}
+
+
+
+@media only screen and (max-device-width: 1024px) {
+    .pagina {
+        max-width: 1024px;
+        background-size: cover;
+        position: relative;
+    }
+}
+
+
+
+@media only screen and (max-device-width: 1920px) {
+
+    .pagina {
+        max-width: 1920px;
+
+        background-size: cover;
+        position: relative;
+    }
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif
+}
+
+
+.container {
+    padding: 0 20px;
+}
+
+.back {
+    width: 100%;
+    height: 100%;
+    background-image: url('../../img/login/backg.jpg');
+    background-size: cover;
+    position: fixed;
+}
+
+
+
+.form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    display: block;
+    width: 350px;
+    height: 600px;
+    background: #fdfdfd;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+    .form .illustration {
+        position: center;
+        text-align: center;
+        font-size: 50px;
+        color: #2980ef;
+    }
+
+
+.illustration img {
+    max-width: 50%;
+    max-height: 30%;
+}
+
+.form .head {
+    width: 100%;
+    height: 55px;
+    display: flex;
+}
+
+    .form .head > div {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        line-height: 55px;
+        cursor: pointer;
+        background: transparent;
+        text-transform: uppercase;
+        font-size: 15px;
+    }
+
+        .form .head.signup > div:nth-child(1), .form .head > div:nth-child(2) {
+            background: #eee;
+        }
+
+    .form .head.signup > div:nth-child(2) {
+        background: transparent !important;
+    }
+
+
+.form .body {
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    position: absolute;
+    overflow: hidden;
+    width: 90%;
+    height: 100%;
+}
+
+    .form .body > div {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transition: all 300ms ease-in-out;
+    }
+
+        .form .body > div.login {
+            left: 0%;
+        }
+
+        .form .body > div.signup {
+            left: 100%;
+        }
+
+    .form .body.active > div.login {
+        left: -100%;
+    }
+
+    .form .body.active > div.signup {
+        left: 0%;
+    }
+
+    .form .body .form-row {
+    }
+
+        .form .body .form-row label {
+            display: block;
+            padding: 12px 10px 0px;
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-top: 5%;
+        }
+
+        .form .body .form-row input {
+            width: 100%;
+            border: none;
+            outline: none;
+            height: 100%;
+            text-indent: 10px;
+            font-size: 15px;
+        }
+
+        .form .body .form-row button {
+            width: 79%;
+            border: none;
+            outline: none;
+            height: 45px;
+            background: #3399ff;
+            text-transform: uppercase;
+            color: #fcfcfc;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 5%;
+            margin-left: 10%;
+        }
+
+    .form .body .signup .form-row button {
+        background: #0f2d41;
+    }
+
+
+    .form .body .rem-row {
+        padding: 10px;
+        border-top: 1px solid #ccc;
+        line-height: 30px;
+    }
+
+        .form .body .rem-row > input {
+            width: 17px;
+            height: 17px;
+            border: 1px solid #999;
+            border-radius: 0px;
+            position: relative;
+            top: 3px;
+        }
+
+        .form .body .rem-row > label {
+            font-size: 15px;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+    .form .body .row {
+        text-align: center;
+        padding: 8px 0px;
+    }
+
+        .form .body .row span {
+            font-size: 14px;
+            position: relative;
+            color: #222;
+            top: 5px;
+            font-weight: 600;
+        }
+
+    .form .body .footer {
+        position: absolute;
+        bottom: 50px;
+        width: 100%;
+        border-top: 1px solid #ccc;
+    }
+
+        .form .body .footer > div.social-form {
+            float: left;
+            padding-left: 50px;
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            text-indent: 2%;
+            color: #fcfcfc;
+            position: relative;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .form .body .footer i {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            left: 0px;
+            line-height: 40px;
+            background: rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .form .body .footer .fb {
+            background: #3b5998;
+        }
+
+        .form .body .footer .google {
+            align-content: center;
+            margin-bottom: 5%;
+        }
+
+    
+    .form .body .form-rowG button {
+        width: 80%;
+        border: none;
+        outline: none;
+        height: 45px;
+        background: tomato;
+        color: #fcfcfc;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 5%;
+        margin-left: 10%;
+
+
+
+
+    }
+    
+    .form .body .form-rowG a {
+        position: absolute;
+        width: 80%;
+        border: none;
+        outline: none;
+        height: 45px;       
+        text-transform: uppercase;
+        color: #fcfcfc;
+        font-size: 16px;
+        cursor: pointer;
+        margin-left: 10%;
+        text-align: center;
+        padding: 10px;
+        top: 80%;
+        left: 40%;
+        transform: translate(-50%,-50%);
+        text-decoration: none;
+    }
+
+.wrap-input100 {
+    position: relative;
+    border-bottom: 2px solid #adadad;
+    margin-bottom: 37px;
+}
+
+    .wrap-input100 input {
+        font-size: 15px;
+        color: #333;
+        border: none;
+        outline: none;
+        background: none;
+        width: 100%;
+        height: 40px;
+    }
+
+    .wrap-input100 span::before {
+        content: attr(data-placeholder);
+        position: absolute;
+        top: 50%;
+        left: 5px;
+        color: #adadad;
+        transform: translateY(-50%);
+        z-index: -1;
+        transition: .5s;
+    }
+
+    .wrap-input100 span::after {
+        content: '';
+        position: absolute;
+        width: 0%;
+        height: 2px;
+        background: linear-gradient(120deg,#00ffff, #ff6a00, #4800ff);
+        transition: .5s;
+    }
+
+.focus + span::before {
+    top: -5px;
+}
+
+.focus + span::after {
+    width: 100%;
+}
+
+.input100 {
+    font-size: 15px;
+    color: #555555;
+    line-height: 1.2;
+    display: block;
+    width: 100%;
+
+    background: transparent;
+
+}

@@ -1,0 +1,344 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Projetos.AcessoProjetoViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutPainel.cshtml";
+
+
+    ViewData["Title"] = "AcessarProjeto";
+    ViewData["Back"] = _localizador["Voltar"];
+
+    ViewData["Project"] = _localizador["Projeto"];
+    ViewData["Register"] = _localizador["Cadastro"];
+    ViewData["Closing"] = _localizador["Encerramento"];
+
+    ViewData["Analysis"] = _localizador["Análises"];
+    ViewData["Collaborators"] = _localizador["Colaboradores"];
+
+
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Project Reopening"] = _localizador["Reabertura de Projeto"];
+
+
+    ViewData["Description"] = _localizador["Descrição"];
+    ViewData["Generate Report"] = _localizador["Gerar Relatório"];
+    ViewData["Add Analysis"] = _localizador["Adicionar Analise"];
+    ViewData["Work"] = _localizador["Trabalhar"];
+    ViewData["View"] = _localizador["Visualizar"];
+    ViewData["Add"] = _localizador["Adicionar"];
+    ViewData["Analysis closed"] = _localizador["Analise encerrada"];
+
+    ViewData["Open Analysis"] = _localizador["Abrir Analise"];
+
+    ViewData["Finish Project"] = _localizador["Encerrar Projeto"];
+
+    ViewData["Click the + button to create a new analysis."] = _localizador["Clique no botão de + para criar uma nova análise"];
+    ViewData["Edit Analysis"] = _localizador["Editar Análise"];
+    ViewData["Remove Analysis"] = _localizador["Excluir Análise"];
+
+
+    string mgs = null;
+
+    if (ViewData["MsgAcaoTela"] != null)
+    {
+        mgs = ViewData["MsgAcaoTela"].ToString();
+    }
+
+
+
+
+}
+
+<style>
+
+    h5, h4, h3, p {
+        color: white;
+    }
+
+    form {
+        margin: 0;
+        padding: 0;
+        height: 2rem;
+    }
+
+    div {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+</style>
+
+
+
+@if (mgs != null)
+{
+    <script>
+        $(document).ready(function () {
+            $('#ModelAvisoAcao').modal('show');
+        })
+    </script>
+}
+
+
+<div class="modal fade" id="ModelAvisoAcao" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:black;" id="TituloModalCentralizado">Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @if (mgs != null)
+                {
+                    @mgs
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Back"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div style="margin-left:3%; margin-right:3%;" id="PageAcessoProjeto">
+    <br />
+    <br />
+    <a asp-action="ProjetoEmAndamento" asp-controller="Projetos">
+        <h5 style="color:black;"> <span class="fa fa-chevron-left"></span>@ViewData["Back"]</h5>
+    </a>
+
+    <div class="breadcrumb bg-dark">
+
+
+        <div style="float:left; width:25rem;"><h4>@ViewData["Project"]: </h4><p>@Model.Titulo</p></div>
+
+        <br />
+
+        <div style="float:left; width:20rem;"><h4>@ViewData["Register"]: </h4><p>@Model.DataCriacao</p></div>
+
+        <br />
+
+        <div style="float:left; width:20rem;"><h4>@ViewData["Closing"]: </h4><p>@Model.DataFinal</p></div>
+
+        <div>
+            @if (Model.AnalisesAberta == false & Model.DataFinal == null)
+            {
+                <a style="float:left; margin-left:5rem;" class="btn btn-danger" onclick="EncerrarProjeto(@Model.Id)">
+                    @ViewData["Finish Project"]
+                </a>
+            }
+            @if (Model.DataFinal != null)
+            {
+                <a style="float:left; color:white; margin-left:5rem;" class="btn btn-primary" onclick="AbrirProjeto(@Model.Id)">
+                    @ViewData["Project Reopening"]
+                </a>
+            }
+        </div>
+
+    </div>
+
+
+
+    <div class="card  mb-3">
+        <div class="card-header bg-dark">
+            <h4>@ViewData["Description"]</h4>
+        </div>
+        <div class="card-body">
+            <p class="card-text" style="color:black;" align="justify">@Model.Descricacao</p>
+            <!--Botão Gerara Relatório Futuras Implementações-->
+            <!--<a style="float:right" class="btn btn-success" asp-controller="Relatorio" asp-action="RelatorioDeProjeto" target="_blank">ViewData["Generate Report"]</a>-->
+        </div>
+    </div>
+
+    <br />
+    <br />
+
+
+
+
+    <div class="breadcrumb bg-dark">
+        <div id="anim">
+            <span class="fa fa-question-circle-o fa-lg" style="color:white;" data-toggle="tooltip" title="@ViewData["Click the + button to create a new analysis."]"></span>
+        </div>
+        <h3>
+            @ViewData["Analysis"]
+            @if (Model.DataFinal == null)
+            {
+                <button type="submit" class="btn btn-primary" style="background-color: #262626; border:none;" onclick="NovaAnalise(@Model.Id)"  data-toggle="tooltip" title="@ViewData["Add Analysis"]">
+                    <span class="fa fa-plus-square fa-lg" />
+                </button>
+
+            }
+        </h3>
+        
+    </div>
+
+
+
+    <div class="row">
+
+        @{
+            if (Model.ListaAnalise != null)
+            {
+                foreach (var analise in Model.ListaAnalise)
+                {
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-header bg-dark">
+                                <h5 style="float:left;">@analise.Nome</h5>
+                                <a class="btn btn-danger" style="float:right; margin-left:2%;" onclick="RemoverAnalise(@analise.Id, @Model.Id)" data-toggle="tooltip" title="@ViewData["Remove Analysis"]"><span class="fa fa-trash fa-lg"  ></span></a>
+                                <a class="btn btn-warning" style="float:right;" onclick="EditarAnaliseDiv(@analise.Id, @Model.Id)" data-toggle="tooltip" title="@ViewData["Edit Analysis"]"><span class="fa fa-edit fa-lg" ></span></a>
+
+                            </div>
+                            <div class="card-body">
+
+                                <p style="color:black;" class="card-text">@analise.Descricao</p>
+                                @if (analise.DataFim == null)
+                                {
+                                    <a asp-action="AcessarAnalise" asp-controller="Analise" asp-route-analiseId="@analise.Id" asp-route-projetoId="@Model.Id" class="btn btn-success">
+                                        <span class="fa fa-sign-in fa-lg" /> @ViewData["Work"]
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span style="color:darkred;">*@ViewData["Analysis closed"]</span><br />
+                                    <a asp-action="AcessarAnalise" asp-controller="Analise" asp-route-analiseId="@analise.Id" asp-route-projetoId="@Model.Id" class="btn btn-success">
+                                        <span class="fa fa-sign-in fa-lg" /> @ViewData["View"]
+                                    </a><br />
+                                    @if (Model.DataFinal == null)
+                                    {
+                                        <a style="margin-top:2%; color:white;" class="btn btn-primary" onclick="AbrirAnalise(@analise.Id, @Model.Id)">
+                                            <span class="fa fa-folder-open-o fa-lg" /> @ViewData["Open Analysis"]
+                                        </a>
+                                    }
+                                }
+
+                                <div class="border border-dark " style="width:50%; float:right;">
+                                    <div style="margin:2%; text-align:center;">
+
+                                        <p align="center" style="color:black;"><span class="fa fa-user"></span>@ViewData["Collaborators"]</p>
+
+                                        <button class="btn btn-flat btn-secondary" style="margin-top:3px;" onclick="listarColaborador(@analise.Id)">
+                                            <span class="fa fa-users fa-lg"></span> @ViewData["View"]
+                                        </button>
+                                        @if (analise.DataFim == null)
+                                        {
+                                            <button class="btn btn-flat btn-secondary" style="margin-top:3px;" onclick="NovoColaboradorV2(@analise.Id, @Model.Id)">
+                                                <span class="fa fa-plus-square fa-lg"></span> @ViewData["Add"]
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+
+    </div>
+
+    <br />
+
+
+
+
+
+    <div id="modalColaborador">
+
+    </div>
+
+    <div id="adicionarCola">
+
+    </div>
+
+    <div id="adicionarAna">
+
+    </div>
+
+    <div id="ConfirmarRemocaoCola">
+
+    </div>
+
+    <div id="removerAnalise">
+
+    </div>
+
+    <div id="EditarAnaliseDiv">
+
+    </div>
+
+    <div id="EncerrarProjeto">
+
+    </div>
+
+    <div id="AbrirAnaliseDiv">
+
+    </div>
+
+
+    <div id="AbrirProjetoDiv">
+
+    </div>
+
+</div>
+
+<script>
+    function AbrirProjeto(IdProjeto) {
+        $("#AbrirProjetoDiv").load("/Projetos/AbrirProjeto?IdProjeto=" + IdProjeto, function () {
+            $("#AbrirProjetoM").modal();
+        })
+    };
+</script>
+
+<script>
+    function AbrirAnalise(IdAnalise, IdProjeto) {
+        $("#AbrirAnaliseDiv").load("/Analise/AbrirAnalise?IdAnalise=" + IdAnalise + "&IdProjeto=" + IdProjeto, function () {
+            $("#AbrirAnaliseM").modal();
+        })
+    };
+</script>
+
+
+
+<script>
+    function EncerrarProjeto(IdProjeto) {
+        $("#EncerrarProjeto").load("/Projetos/EncerrarProjeto?IdProjeto=" + IdProjeto, function () {
+            $("#EncerrarProjetoM").modal();
+        })
+    };
+</script>
+
+
+
+<script>
+    function NovoColaboradorV2(IdAnalise, IdProjeto) {
+        $("#adicionarCola").load("/Analise/AdicionarColaborador?IdAnalise=" + IdAnalise + "&IdProjeto=" + IdProjeto, function () {
+            $("#addCola").modal();
+        })
+    };
+</script>
+
+<script>
+    function RemoverAnalise(IdAnalise, IdProjeto) {
+        $("#removerAnalise").load("/Analise/RemoverAnalise?IdAnalise=" + IdAnalise + "&IdProjeto=" + IdProjeto, function () {
+            $("#RemoverAnalise").modal();
+        })
+    };
+</script>
+
+
+<script>
+    function EditarAnaliseDiv(IdAnalise, IdProjeto) {
+        $("#EditarAnaliseDiv").load("/Analise/EditarAnalise?IdAnalise=" + IdAnalise + "&IdProjeto=" + IdProjeto, function () {
+            $("#EditarAnalise").modal();
+        })
+    };
+</script>
+

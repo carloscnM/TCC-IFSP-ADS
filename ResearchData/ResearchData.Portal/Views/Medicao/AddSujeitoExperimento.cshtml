@@ -1,0 +1,130 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Medicoes.AltCadMedicaoExpViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+
+    ViewData["Add or Remove Subject"] = _localizador["Adicionar ou Remover Sujeito"];
+    ViewData["Analysis"] = _localizador["Análise"];
+    ViewData["Experiment"] = _localizador["Experimento"];
+    ViewData["Select"] = _localizador["Selecionar"];
+    ViewData["Features"] = _localizador["Características"];
+    ViewData["Id from Subject"] = _localizador["Id do Sujeito"];
+    ViewData["Name"] = _localizador["Nome"];
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Select All"] = _localizador["Selecionar Tudo"];
+    ViewData["Submit Changes"] = _localizador["Salvar mudanças"];
+    ViewData["If you removed one or more subjects from the experiment, possible captured data will be lost!"] = _localizador["Caso tenha removido um ou mais sujeitos do experimento, será perdido possíveis dados captados!"];
+
+}
+
+
+<div class="modal fade" id="modalAddSujeitoExp" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:black;" id="TituloModalLongoExemplo">@ViewData["Add or Remove Subject"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div style="height:340px;" class="modal-body">
+                <form asp-action="AddSujeitoExperimento" asp-controller="Medicao" method="post" id="AddSujeitoExp">
+                    <input type="hidden" asp-for="IdAnalise" />
+                    <input type="hidden" asp-for="IdExperimento" />
+                    <input type="hidden" asp-for="IdProjeto" />
+                    <div class="form-row" style="align-content:center;">
+                        <div>
+                            <h6 style="color:black;"><b>@ViewData["Analysis"]: </b>@Model.TituloAnalise</h6>
+                            <h6 style="color:black; margin-top:3%;"><b>@ViewData["Experiment"]: </b>@Model.NomeExp</h6>
+                        </div>
+                    </div>
+                    <input type="hidden" />
+                    <input type="hidden" />
+                    <hr />
+                    <div style="align-content:center">
+                        <h6 style="color:black;">@ViewData["Features"]</h6>
+                    </div>
+                    <br />
+                    <div style="width:100%; height:200px; overflow:auto;">
+                        <table class="table table-bordered table-responsive-sm">
+                            <tbody>
+                                <tr class="bg-dark" style="color: white;">
+                                    <td>@ViewData["Select"]</td>
+                                    <td>@ViewData["Name"]</td>
+                                </tr>
+
+                                <input type="checkbox" class="selectall" id="some1" data-check-pattern="[name^='some-key']" style="float:left;" />
+                                <label style="margin-top:3%;">@ViewData["Select All"]</label>
+                                @if (Model.SujeitosNoExperimento.Count > 0)
+                                {
+                                    @for (int i = 0; i < Model.SujeitosNoExperimento.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div style="margin-right:1%;">
+                                                    @Html.HiddenFor(model => model.SujeitosNoExperimento[i].IdSujeito)
+                                                    @Html.CheckBoxFor(model => model.SujeitosNoExperimento[i].IsChecked, new { @class = "individual" })
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    @Model.SujeitosNoExperimento[i].Descricao
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                }
+                                @if (Model.SujeitosDisponiveis.Count > 0)
+                                {
+                                    @for (int i = 0; i < Model.SujeitosDisponiveis.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div style="margin-right:1%;">
+                                                    @Html.HiddenFor(model => model.SujeitosDisponiveis[i].IdSujeito)
+                                                    @Html.CheckBoxFor(model => model.SujeitosDisponiveis[i].IsChecked, new { @class = "individual" })
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    @Model.SujeitosDisponiveis[i].Descricao
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                <button type="button" class="btn btn-primary" onclick="salvarAlteracaoSubmit()">@ViewData["Submit Changes"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function salvarAlteracaoSubmit() {
+        var confirma = confirm("@ViewData["If you removed one or more subjects from the experiment, possible captured data will be lost!"]");
+        debugger;
+        if (confirma == true) {
+            document.forms["AddSujeitoExp"].submit();
+        }
+    };
+</script>
+
+
+<script>
+    $(".selectall").click(function () {
+        $(".individual").prop("checked", $(this).prop("checked"));
+    });
+</script>

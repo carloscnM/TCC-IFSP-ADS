@@ -1,0 +1,104 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Comentarios.ComentarioAnaliseViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["Title"] = "Comentarios";
+
+    ViewData["Comments"] = _localizador["Comentarios"];
+    ViewData["Today"] = _localizador["Hoje"];
+    ViewData["days ago"] = _localizador["dias atras"];
+    ViewData["Add Comment"] = _localizador["Adicionar Comentário"];
+    ViewData["We cannot include blank comments or text longer than 500 characters!"] = _localizador["Não podemos incluir comentários em branco ou com texto maior que do que 500 caracteres"];
+
+}
+
+
+<div class="modal fade " id="listarComentario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:black">@ViewData["Comments"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div>
+                <div class="modal-body" style="height:300px;">
+
+                    <div style="height:250px;  overflow:auto;">
+                        <div style="margin-bottom:3%;" class="list-group-item list-group-item-action flex-column align-items-start">
+                            @foreach (var item in Model.Comentarios)
+                            {
+                                TimeSpan dataCad = DateTime.Now - item.DataInclusao;
+                                <div class="d-flex w-100 justify-content-between">
+
+                                    <p style="color:black; width:60%;" align="justify">  @item.Mensagem </p>
+
+                                    <div style="float:right">
+                                        <small class="text-muted"> @item.NomeUsuario.Substring(0, item.NomeUsuario.IndexOf(" ")) </small>
+                                        <br />
+                                        @if (dataCad.Days == 0)
+                                        {
+                                            <small class="text-muted"> @ViewData["Today"] </small>
+                                        }
+                                        else
+                                        {
+                                            <small class="text-muted"> @dataCad.Days @ViewData["days ago"] </small>
+                                        }
+
+                                    </div>
+                                </div>
+                                <hr />
+                            }
+                        </div>
+                    </div>
+                    <br />
+                    <div>
+                        <input type="hidden" name="userName" id="userName" value="@User.Identity.Name.ToString()" />
+                        <input type="hidden" name="analiseId" id="analiseId" value="@Model.AnaliseId" />
+                        <textarea class="form-control" maxlength="500" name="textoComentario" id="textoComentario" style="float:left; margin-bottom:5px;" />
+                        <a style="margin-left:2%; float:right; margin-bottom:5px;" class="btn btn-outline-secondary" onclick="AdicionarComentarioAnalise()">
+                            <span class="fa fa-link fa-lg" /> @ViewData["Add Comment"]
+                        </a>
+                    </div>
+
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function AdicionarComentarioAnalise() {
+
+        var textoComentario = document.getElementById('textoComentario').value;
+        var userName = document.getElementById('userName').value;
+        var analiseId = document.getElementById('analiseId').value;
+
+        var modelo = { TextoComentario: textoComentario, UserName: userName, AnaliseId: analiseId }
+
+        if (textoComentario < 5 || textoComentario > 500)
+        {
+            alert('@ViewData["We cannot include blank comments or text longer than 500 characters!"]')
+        }
+        else {
+
+            $.ajax({
+                type: "POST",
+                url: "/Comentarios/CadastrarComentario",
+                data: modelo
+            }).done(function () {
+                $("#listarComentario").attr({ "style": "display: none;" });
+                $('.modal-backdrop').hide();
+
+
+                $("#ComentariosDaAnalise").load("/Comentarios/Comentarios?IdAnalise=" + @Model.AnaliseId, function () {
+                    $("#listarComentario").modal();
+                });
+                });
+        }
+    };
+</script>

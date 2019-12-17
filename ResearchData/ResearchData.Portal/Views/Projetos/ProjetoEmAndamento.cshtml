@@ -1,0 +1,91 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["Title"] = "ProjetoEmAndamento";
+    Layout = "~/Views/Shared/_LayoutPainel.cshtml";
+
+    ViewData["New"] = _localizador["Novo"];
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["My Projects"] = _localizador["Meus Projetos"];
+    ViewData["Click the NEW button to create a new project."] = _localizador["Clique no botão de NOVO para criar um novo projeto"];
+    ViewData["An error occured during Registration, please try again!"] = _localizador["Ocorreu um erro durente o Cadastro, tente novamente!"];
+    string msg = "";
+}
+
+@if (ViewData["alerta"] != null)
+{
+    msg = ViewData["alerta"].ToString();
+
+    <script>
+        $(document).ready(function () {
+            $('#ModelAvisoProjeto').modal('show');
+        });
+    </script>
+}
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+
+<div class="modal fade" id="ModelAvisoProjeto" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:black;" id="TituloModalCentralizado">Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @if (msg != null)
+                {
+                    @msg
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div style="margin-left:3%; margin-right:3%;">
+    <div class="breadcrumb " style="margin-top:80px;">
+
+        <h2>@ViewData["My Projects"]</h2>
+
+        <div id="anim" style="margin-left:1%;">
+            <span class="fa fa-question-circle fa-lg" data-toggle="tooltip" title="@ViewData["Click the NEW button to create a new project."]"></span>
+        </div>
+
+        <div style="margin-left:67%;">
+            <button type="button" class="btn btn-primary btn-create" data-toggle="modal" onclick="NovoProjeto()">
+                <span class="fa fa-plus-square fa-lg" /> @ViewData["New"]
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="table-responsive" id="listaDeProjetos">
+        @await Component.InvokeAsync("ListaDeProjetos", new { UserName = User.Identity.Name })
+    </div>
+
+    <div id="modalCadastro">
+
+    </div>
+
+
+    <div id="modalExclusao">
+
+    </div>
+
+    <div id="modal">
+
+    </div>
+
+
+</div>

@@ -1,0 +1,52 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Colaborador.NovoColaboradorViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["New Collaborator"] = _localizador["Novo Colaborador"];
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Submit"] = _localizador["Cadastrar"];
+    ViewData["Permition"] = _localizador["Permissão"];
+    ViewData["View"] = _localizador["Visualizar"];
+    ViewData["Edit"] = _localizador["Editar"];
+}
+
+
+<div class="modal fade" id="addCola" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:black;">@ViewData["New Collaborator"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="@ViewData["Close"]">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:180px;">
+                <form asp-action="AdicionarColaborador" asp-controller="Analise" method="post" id="CadastrarCola">
+                    <input type="hidden" asp-for="IdAnalise" />
+                    <input type="hidden" asp-for="IdProjeto" />
+                    <div>
+                        <label>Email:</label>
+                        <input asp-for="Email" class="form-control" />
+                    </div>
+
+                    <div>
+                        <div class="form-group" style="margin-top:1%;">
+                            <label class="control-label">@ViewData["Permition"]:</label>
+                            <select class="form-control float-left" style="height:41px; float:left;" asp-for="Acesso">
+                                <option value="1" selected>@ViewData["View"]</option>
+                                <option value="2">@ViewData["Edit"]</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                <button type="button" class="btn btn-primary" onclick="submitform()">@ViewData["Submit"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/modais.js"></script>

@@ -1,0 +1,42 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Projetos.ProjetoViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["Confirm a project deletion"] = _localizador["Confirmar a exclusão do projeto"];
+
+    ViewData["Remove"] = _localizador["Excluir"];
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Project"] = _localizador["Projeto"];
+    ViewData["By confirming you are agreeing that neither you nor your contributors will be able to access this project again!"] = _localizador["Ao confirmar você está concordando que nem você nem seus colaboradores poderão acessar esse projeto novamente!"];
+}
+
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="exprojeto" id="exprojeto" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div style="margin:3%;">
+                <form asp-action="ExcluirProjeto" asp-controller="Projetos" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="Titulo" />
+                    <input type="hidden" asp-for="Descricacao" />
+                    <br />
+
+                    <h5>@ViewData["Confirm a project deletion"]:</h5><br />
+                    <br />
+
+                    <h6>@ViewData["Project"]:  @Model.Titulo</h6>
+                    <br />
+                    <p style="color:darkred;">@ViewData["By confirming you are agreeing that neither you nor your contributors will be able to access this project again!"]</p>
+                    <br />
+
+
+
+                    <br />
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                    <button type="submit" class="btn btn-danger">@ViewData["Remove"]</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

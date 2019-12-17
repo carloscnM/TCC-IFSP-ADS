@@ -1,0 +1,86 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Analises.ColaboradorAnaliseViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["Analysis Contributors"] = _localizador["Colaboradores da Análise"];
+    ViewData["Close"] = _localizador["Fechar"];
+
+
+}
+
+
+
+<div class="modal fade" id="listarCola" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:black">@ViewData["Analysis Contributors"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="" style="margin:2%;">
+                </div>
+                <div style="margin:5%;">
+                    @if (Model.Lista != null)
+                    {
+                        foreach (var cola in Model.Lista)
+                        {
+                            TimeSpan dataCad = DateTime.Now - cola.DataCadastro;
+                            string tempcad = $"{dataCad.Days} dias atrás";
+                            if (dataCad.Days == 0)
+                            {
+                                tempcad = "hoje";
+                            }
+
+                            <div style="margin-bottom:3%; height:80px; overflow:auto;" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <input id="IdAnalise" type="hidden" value="@Model.IdAnalise" />
+                                    <button class="btn btn-danger small" onclick='removerColaAnalise(@Model.IdProjeto, "@cola.UsuarioId" )'>
+                                        <span class="fa fa-times" />
+                                    </button>
+                                    <h6 style="position:center" id="Email">  @cola.Email </h6>
+                                    <div style="margin-top:4%;">
+                                        @if (cola.Acesso == 1)
+                                        {
+                                            <i class="fa fa-eye fa-lg"></i>
+
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-pencil fa-lg"></i>
+                                        }
+                                    </div>
+                                    <small class="text-muted"> @tempcad </small>
+                                </div>
+                            </div>
+                        }
+
+                    }
+                    <div class="">
+                        <button style="float:right" type="button" class="btn btn-danger" data-dismiss="modal">@ViewData["Close"]</button>
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    function removerColaAnalise(IdProjeto, ColaId) {
+        var IdAnalise = document.getElementById('IdAnalise').value;
+        $("#listarCola").attr({ "style": "display: none;" });
+        $('.modal-backdrop').hide();
+
+        $("#ConfirmarRemocaoCola").load("/Colaborador/RemoverColaborador?IdAnalise=" + IdAnalise + "&IdProjeto=" + IdProjeto + "&ColaId=" + ColaId, function () {
+            $("#removeColaModal").modal();
+        });
+    };
+</script>
+

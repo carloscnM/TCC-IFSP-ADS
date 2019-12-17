@@ -1,0 +1,58 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Analises.NovaAnaliseViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+
+@{
+    Layout = null;
+
+    ViewData["Analysis Close Confirmation"] = _localizador["Confirmação de Encerramento de Análise"];
+
+    ViewData["Please confirm the termination of the analysis."] = _localizador["Por favor, confirme o encerramento da Analise"];
+    ViewData["At the end of the analysis, all data collection will be paused until the opening is performed again!"] = _localizador["Ao encerrar a analise, será pausada todos as coletas de dados até que seja realize a abertura novamente!"];
+    ViewData["Project"] = _localizador["Projeto"];
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["End Analysis"] = _localizador["Encerrar Analise"];
+}
+
+
+
+<div class="modal fade" id="EncerrarAnaliseM" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:black;">@ViewData["Analysis Close Confirmation"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:250px; overflow:auto;">
+                <div class="row">
+                    <div class="col-lg">
+                        <form asp-action="EncerrarAnalise" asp-controller="Analise" method="post" id="EncerrarAnalise">
+                            <input type="hidden" asp-for="ProjetoId" />
+                            <input type="hidden" asp-for="IdAnalise" />
+                            <br />
+                            <label>@ViewData["Please confirm the termination of the analysis."]</label><br />
+                            <br />
+                            <b style="color:black;">@ViewData["Project"]: </b><p style="color:black;">@Model.Titulo</p>
+                            <br />
+                            <p style="color:darkred;">@ViewData["At the end of the analysis, all data collection will be paused until the opening is performed again!"]</p>
+                            <br />
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                <button type="button" class="btn btn-primary" onclick="confirmarEncerrarAnalise()">@ViewData["End Analysis"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmarEncerrarAnalise() {
+        document.forms["EncerrarAnalise"].submit();
+    };
+</script>

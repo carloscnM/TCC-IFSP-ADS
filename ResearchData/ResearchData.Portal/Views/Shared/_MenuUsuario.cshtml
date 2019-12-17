@@ -1,0 +1,35 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+
+@{
+    ViewData["myprojects"] = _localizador["Meus Projetos"];
+    ViewData["newproject"] = _localizador["Novo Projeto"];
+    ViewData["ongoingprojects"] = _localizador["Gerenciar Projetos"];
+    ViewData["finishedprojects"] = _localizador["Projetos Finalizados"];
+    ViewData["profile"] = _localizador["Perfil"];
+    ViewData["projects"] = _localizador["Projetos"];
+    ViewData["areas"] = _localizador["Áreas"];
+    ViewData["systemversion"] = _localizador["Versão do sistema"];
+    ViewData["exit"] = _localizador["Sair"];
+    ViewData["finishsession"] = _localizador["Finalizar sessão"];
+    ViewData["configuration"] = _localizador["Configuração"];
+    ViewData["informations"] = _localizador["Informações"];
+
+}
+
+
+<li class="active" style="overflow:no-display;">
+    <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-folder"></i><span>@ViewData["newproject"]</span></a>
+    <ul class="collapse">
+        <li><a asp-action="ProjetoEmAndamento" asp-controller="Projetos"><i class="fa fa-bar-chart-o"></i> @ViewData["ongoingprojects"]</a></li>
+    </ul>
+</li>
+<li style="overflow:no-display;">
+    <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-folder"></i><span>Colaborações</span></a>
+    <ul class="collapse">
+        <li><a asp-action="ListaDeAnalises" asp-controller="Colaborador"><i class="fa fa-flask"></i>Análises</a></li>
+    </ul>
+</li>

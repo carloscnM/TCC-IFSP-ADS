@@ -1,0 +1,99 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Caracteristicas.CriarCaracteristicaViewModel
+@using ResearchData.Portal.Models.Negocio.Sujeitos
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["Title"] = "CriarCaracteristicas";
+    ViewData["Feature Registration successfully completed!"] = "Cadastro de Caracteristica realizado com sucesso!";
+    Layout = "~/Views/Shared/_LayoutPainel.cshtml";
+
+    ViewData["Characteristic Register"] = _localizador["Cadastro de Característica"];
+    ViewData["Description"] = _localizador["Descrição"];
+    ViewData["Data Type"] = _localizador["Tipo de Dado"];
+    ViewData["Common or Specific"] = _localizador["Comum ou Específica"];
+    ViewData["Select"] = _localizador["Selecione"];
+    ViewData["Common"] = _localizador["Comum"];
+    ViewData["Specific"] = _localizador["Específica"];
+    ViewData["Submit"] = _localizador["Cadastrar"];
+
+
+    ViewData["Registration Successfully done!"] = _localizador["Cadastro Realizado com sucesso!"];
+    ViewData["An error occurred during registration. Try again!"] = _localizador["Ocorreu um erro durante o cadastro. Tente novamente!"];
+
+
+
+}
+
+<div style="margin:3%;">
+    @if (ViewBag.CadatroSucesso != null)
+    {
+        if (ViewBag.CadatroSucesso)
+        {
+            <div class="alert alert-success" role="alert">
+                @ViewData["Registration Successfully done!"]
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewData["An error occurred during registration. Try again!"]
+            </div>
+        }
+    }
+
+
+</div>
+
+
+<div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left:2%;margin-top:3%;margin-bottom:3%;"></div>
+
+<div style="margin-left:2%;">
+
+    <h3>@ViewData["Characteristic Register"]</h3>
+
+    <hr />
+    <div class="col-md-4">
+        <form asp-action="CriarCaracteristica" asp-controller="Caracteristica">
+            <div class="form-group">
+                <label class="control-label">@ViewData["Description"]</label>
+                <input asp-for="Descricao" class="form-control" />
+                <div style="margin-top:1%;">
+                    <span asp-validation-for="Descricao" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">@ViewData["Data Type"]</label>
+                <select style="height:45px;" class="form-control" asp-for="TipoDoDado">
+                    <option selected="selected" value="">@ViewData["Select"]</option>
+                    <option selected="selected" value="tint">@TipoDoDado.tint.GetDisplayNameGlobal()</option>
+                    <option selected="selected" value="tfloat">@TipoDoDado.tfloat.GetDisplayNameGlobal()</option>
+                    <option selected="selected" value="tstring">@TipoDoDado.tstring.GetDisplayNameGlobal()</option>
+                    <option selected="selected" value="tdata">@TipoDoDado.tdata.GetDisplayNameGlobal()</option>
+                    <option selected="selected" value="tbool">@TipoDoDado.tbool.GetDisplayNameGlobal()</option>
+                </select>
+                <div style="margin-top:1%;">
+                    <span asp-validation-for="TipoDoDado" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">@ViewData["Common or Specific"];</label>
+                <select style="height:45px;" class="form-control" asp-for="Comun">
+                    <option selected="selected" value="">@ViewData["Select"]</option>
+                    <option value="true">@ViewData["Common"]</option>
+                    <option value="false">@ViewData["Specific"]</option>
+                </select>
+                <div style="margin-top:1%;">
+                    <span asp-validation-for="TipoDoDado" class="text-danger"></span>
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <input type="submit" value="@ViewData["Submit"]" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+

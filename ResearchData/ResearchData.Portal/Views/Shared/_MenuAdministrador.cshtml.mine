@@ -1,0 +1,58 @@
+﻿
+@*
+    
+*@
+
+<nav class="dash-nav-list">
+    <div class="dash-nav-dropdown">
+        <a href="#!" class="dash-nav-item dash-nav-dropdown-toggle">
+            <i class="fa fa-cube"></i> Administrador
+        </a>
+        <div class="dash-nav-dropdown-menu">
+            <a href="chartjs.html" class="dash-nav-dropdown-item">Novo Administrador</a>
+        </div>
+        <div class="dash-nav-dropdown-menu">
+            <a href="chartjs.html" class="dash-nav-dropdown-item">Nova Área</a>
+        </div>
+       
+        <div class="dash-nav-dropdown-menu">
+            <a href="chartjs.html" class="dash-nav-dropdown-item">Administradores</a>
+        </div>
+    </div>
+    <div class="dash-nav-dropdown ">
+        <a href="#!" class="dash-nav-item dash-nav-dropdown-toggle">
+            <i class="fa fa-cog"></i> Configuração
+        </a>
+        <div class="dash-nav-dropdown-menu">
+            <a asp-action="Configuracao" asp-controller="Configuracao" class="dash-nav-dropdown-item">Sistema</a>
+        </div>
+        <div class="dash-nav-dropdown-menu">
+            <a asp-action="Configuracao" asp-controller="Configuracao" class="dash-nav-dropdown-item">Perfil</a>
+        </div>
+        
+    </div>
+    <div class="dash-nav-dropdown">
+        <a href="#!" class="dash-nav-item dash-nav-dropdown-toggle">
+            <i class="fa fa-info"></i> Informações
+        </a>
+        <div class="dash-nav-dropdown-menu">
+            <a asp-action="Configuracao" asp-controller="Configuracao" class="dash-nav-dropdown-item">Projetos</a>
+        </div>
+        <div class="dash-nav-dropdown-menu">
+            <a asp-action="Configuracao" asp-controller="Configuracao" class="dash-nav-dropdown-item">Áreas</a>
+        </div>
+        <div class="dash-nav-dropdown-menu">
+            <a asp-action="Configuracao" asp-controller="Configuracao" class="dash-nav-dropdown-item">Versão do Sistema</a>
+        </div>
+        
+    </div>
+    <div class="dash-nav-dropdown">
+        <a href="#!" class="dash-nav-item dash-nav-dropdown-toggle">
+            <i class="fa fa-cube"></i> Sair
+        </a>
+        <div class="dash-nav-dropdown-menu">
+            <a asp-action="Logout" asp-controller="Account" class="dash-nav-dropdown-item">Finalizar Sessão</a>
+        </div>
+                
+    </div>
+</nav>

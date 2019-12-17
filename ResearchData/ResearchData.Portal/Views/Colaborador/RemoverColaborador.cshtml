@@ -1,0 +1,56 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Colaborador.DetalheColaboradorViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+
+
+
+    ViewData["Confirm Contributor Removal"] = _localizador["Confirmar remoção do Colaborador"];
+    ViewData["Do you really want to remove the developer?"] = _localizador["Deseja realmente remover o colaborador ?"];
+    ViewData["Name"] = _localizador["Nome"];
+    ViewData["Registration date:"] = _localizador["Data de Cadastro:"];
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Remove"] = _localizador["Remover"];
+
+}
+
+
+<div class="modal fade" id="removeColaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:black;">@ViewData["Confirm Contributor Removal"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="@ViewData["Close"]">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:200px; overflow:auto;">
+                <h5>
+                    @ViewData["Do you really want to remove the developer?"]
+                </h5>
+                <form asp-action="RemoverColaborador" asp-controller="Colaborador" method="post" id="RemoverColaborador">
+                    <label>@ViewData["Name"]: </label> <b>@Model.Nome</b>
+                    <br />
+                    <label>E-mail: </label><b>@Model.Email</b>
+                    <br />
+                    <label>@ViewData["Registration date:"] </label> <b>@Model.DtInclusao</b>
+                    <input type="hidden" asp-for="Id"/>
+                    <input type="hidden" asp-for="IdAnalise"/>
+                    <input type="hidden" asp-for="IdProjeto"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                <button type="button" class="btn btn-danger" onclick="confirmarExclusao()">@ViewData["Remove"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function confirmarExclusao() {
+        document.forms["RemoverColaborador"].submit();
+    };
+</script>

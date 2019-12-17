@@ -1,0 +1,87 @@
+﻿@model IList<ResearchData.Portal.Models.ViewModels.Grupos.GrupoViewModel>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Group"] = _localizador["Grupo"];
+    ViewData["Actions"] = _localizador["Ações"];
+    ViewData["Edit Group"] = _localizador["Editar Grupo"];
+    ViewData["Deactivate Group"] = _localizador["Desativar Grupo"];
+
+    ViewData["List of groups created in this analysis"] = _localizador["Lista de grupos criados nesta análise"];
+
+    int Acesso = 0;
+
+    if (ViewBag.Acesso != null)
+    {
+        Acesso = Convert.ToInt16(ViewBag.Acesso);
+    }
+}
+
+<div class="modal fade" id="ModalListaGrupo" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:black;">@ViewData["List of groups created in this analysis"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:300px;">
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+
+                            <th scope="col">@ViewData["Group"]</th>
+                            <th scope="col">@ViewData["Actions"]</th>
+
+                        </tr>
+                    </thead>
+                </table>
+
+                <div style=" height:220px; overflow:auto;">
+                    <table class="table table-borderless">
+
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Nome</td>
+
+                                    @if (ViewBag.Resposavel != null)
+                                    {
+                                        if (Acesso == 2)
+                                        {
+                                            <td>
+                                                <a style="margin:1%;" onclick="EditarGruposAnalise(@item.Id)" class="btn btn-warning" data-toggle="tooltip" title="@ViewData["Edit Group"]">
+                                                    <span class="fa fa-edit fa-lg"></span>
+                                                </a>
+                                                @if (ViewBag.Resposavel)
+                                                {
+                                                    <a style="margin:1%;" onclick="DesativarGruposAnalise(@item.Id)" class="btn btn-danger" data-toggle="tooltip" title="@ViewData["Deactivate Group"]">
+                                                        <span class="fa fa-trash fa-lg" />
+                                                    </a>
+                                                }
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                    }
+
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,348 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["logout"] = _localizador["Sair"];
+    var userName = "";
+    if (User.Identity.IsAuthenticated)
+    {
+        userName = User.Identity.Name;
+        userName = userName.Substring(0, userName.IndexOf("@"));
+    }
+
+    ViewData["projetoAnd"] = _localizador["Projetos em andamento"];
+    ViewData["projetoFinish"] = _localizador["Projetos finalizados"];
+    ViewData["overview"] = _localizador["Visão Geral"];
+
+    ViewData["Projects"] = _localizador["Projetos"];
+    ViewData["My Projects"] = _localizador["Meus Projetos"];
+    ViewData["Collaborations"] = _localizador["Colaborações"];
+    ViewData["Analysis"] = _localizador["Análises"];
+    ViewData["Features"] = _localizador["Característica"];
+    ViewData["Include"] = _localizador["Incluir"];
+
+    ViewData["Import"] = _localizador["Importar"];
+    ViewData["Consult"] = _localizador["Consultar"];
+    ViewData["Templates"] = _localizador["Modelos"];
+    ViewData["Administration"] = _localizador["Administração"];
+    ViewData["Informations"] = _localizador["Informações"];
+    ViewData["About"] = _localizador["Sobre"];
+    ViewData["Profile"] = _localizador["Perfil"];
+    ViewData["Access the term of use"] = _localizador["Acesse o termo de uso"];
+    ViewData["Access Rights"] = _localizador["Direitos de Acesso"];
+    ViewData["All rights reserved to"] = _localizador["Todos os direitos reservados a"];
+    ViewData["termofuse"] = _localizador["Termo de Uso"];
+
+
+
+}
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Research Data Facility</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="imagem/x-icon" href="~/img/LogoMarca/rdfIcon.ico" />
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.7.8/metisMenu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/slicknav.min.css">
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+
+
+    <link href="~/css/Painel/css/themify-icons.css" rel="stylesheet" />
+    <link href="~/css/Painel/css/typography.css" rel="stylesheet" />
+    <link href="~/css/Painel/css/default-css.css" rel="stylesheet" />
+    <link href="~/css/Painel/css/styles.css" rel="stylesheet" />
+    <link href="~/css/Painel/css/responsive.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+        $('body').on('hidden.bs.modal', '.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+    </script>
+
+    <style>
+
+
+        input, select, option {
+            height: 45px;
+        }
+    </style>
+
+
+    @if (TempData["MsgCola"] != null)
+    {
+        <script>
+        alert('@ViewBag.MsgCola');
+        </script>
+    }
+
+</head>
+<body>
+
+    <!-- início do preloader -->
+    <div id="preloader">
+        <div class="inner">
+            <!-- HTML DA ANIMAÇÃO MUITO LOUCA DO SEU PRELOADER! -->
+            <div class="bolas">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+    <!-- fim do preloader -->
+
+
+
+
+    <div class="page-container">
+        <div class="sidebar-menu" style="overflow:no-display;">
+            <div class="sidebar-header" style="overflow:no-display;">
+                <div class="logo">
+                    <a asp-action="Index" asp-controller="Painel"><img src="~/img/LogoMarca/logo.gif" width="130" alt="logo"></a>
+                    <h5 style="color:white;">Research Data Facility</h5>
+                </div>
+            </div>
+            <div class="main-menu">
+                <div class="menu-inner" style="overflow:hidden;">
+                    <nav>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <ul class="metismenu" id="menu" style="color:white;">
+                                @{
+
+                                    if (User.IsInRole(PerfisPadroes.USUARIO))
+                                    {
+                                        <li class="overflow:no-display" style="overflow:no-display;">
+                                            <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-folder"></i><span> @ViewData["Projects"]</span></a>
+                                            <ul class="collapse">
+                                                <li><a asp-action="ProjetoEmAndamento" asp-controller="Projetos"><i class="fa fa-bar-chart-o"></i> @ViewData["My Projects"]</a></li>
+                                            </ul>
+                                        </li>
+                                        <li style="overflow:no-display;">
+                                            <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-folder"></i><span> @ViewData["Collaborations"]</span></a>
+                                            <ul class="collapse">
+                                                <li><a asp-action="ListaDeAnalises" asp-controller="Colaborador"><i class="fa fa-flask"></i> @ViewData["Analysis"]</a></li>
+                                            </ul>
+                                        </li>
+                                    }
+                                }
+
+
+
+
+
+
+                                <li>
+                                    <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-folder"></i><span>@ViewData["Features"]</span></a>
+
+                                    @if (User.IsInRole(PerfisPadroes.ADMINISTRADOR) || User.IsInRole(PerfisPadroes.CRIARCATEGORIA))
+                                    {
+
+                                        <ul class="collapse">
+                                            <li><a asp-action="CriarCaracteristica" asp-controller="Caracteristica"><i class="fa fa-bar-chart-o"></i> @ViewData["Include"]</a></li>
+                                        </ul>
+                                        <ul class="collapse">
+                                            <li><a asp-action="ImportarCaracteristicas" asp-controller="Caracteristica"><i class="fa fa-bar-chart-o"></i> @ViewData["Import"]</a></li>
+                                        </ul>
+
+                                    }
+                                    <ul class="collapse">
+                                        <li><a asp-action="ConsultarCaracteristicas" asp-controller="Caracteristica"><i class="fa fa-bar-chart-o"></i> @ViewData["Consult"]</a></li>
+                                    </ul>
+
+                                </li>
+
+                                <li>
+                                    <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-folder"></i><span>@ViewData["Templates"]</span></a>
+
+                                    @if (User.IsInRole(PerfisPadroes.ADMINISTRADOR) || User.IsInRole(PerfisPadroes.CRIARTEMPLETE))
+                                    {
+
+                                        <ul class="collapse">
+                                            <li><a asp-action="CriarExperimentoTemplete" asp-controller="TempleteExperimento"><i class="fa fa-bar-chart-o"></i> @ViewData["Include"]</a></li>
+                                        </ul>
+
+                                    }
+                                    <ul class="collapse">
+                                        <li>
+                                            <a onclick="FSelConExperimento()" href="javascript:void(0)">
+                                                <i class="fa fa-bar-chart-o"></i> @ViewData["Consult"]
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                </li>
+                                @if (User.IsInRole(PerfisPadroes.ADMINISTRADOR))
+                                {
+                                    <li>
+                                        <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-folder"></i><span>@ViewData["Administration"]</span></a>
+
+
+
+                                        <ul class="collapse">
+                                            <li><a asp-action="Direitos" asp-controller="Admin"><i class="fa fa-bar-chart-o"></i>@ViewData["Access Rights"]</a></li>
+                                        </ul>
+
+
+                                    </li>
+                                }
+
+                                <li>
+                                    <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-folder"></i><span>@ViewData["Informations"]</span></a>
+
+                                    <ul class="collapse">
+                                        <li><a asp-action="Sobre" asp-controller="Sobre"><i class="fa fa-bar-chart-o"></i> @ViewData["About"]</a></li>
+                                        <li><a onclick="AbrirTermoDeUso()" href="javascript:void(0)"><i class="fa fa-bar-chart-o"></i> @ViewData["termofuse"]</a></li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        }
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="page-title-area">
+                <div class="row align-items-center">
+                    <div class="col-md-6 col-sm-8 clearfix">
+                        <div class="nav-btn fa fa-bars fa-lg">
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-6 clearfix">
+                        <div class=" user-profile pull-right">
+                            <img class="avatar user-thumb" src="~/img/login/avatarUserPadrao.png" alt="avatar" style="float:left;">
+                            <h4 style="color:black; float:left;" class="user-name dropdown-toggle" data-toggle="dropdown">@userName<i style="float:right;" class="fa fa-angle-down"></i></h4>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-action="DadosUsuario" asp-controller="DadosDeCadastro">@ViewData["Profile"]</a>
+                                <a class="dropdown-item" asp-action="Logout" asp-controller="Account">@ViewData["logout"]</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="padding-bottom:5%;">
+                <partial name="_CookieConsentPartial" />
+                @RenderBody()
+            </div>
+
+            <div id="SelExpConsultaDiv">
+
+
+            </div>
+
+            <div id="ModalTermoUsoDiv">
+
+            </div>
+
+
+        </div>
+
+
+
+
+        <footer>
+            <div class="footer-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-10"><p>© Copyright 2019. @ViewData["All rights reserved to"] Research Data Facility.</p></div>
+                        <div class="col-md-2 text-center">
+                            <partial name="_SelecionarIdioma" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </footer>
+    </div>
+
+
+    <script>
+        function AbrirTermoDeUso() {
+            $("#ModalTermoUsoDiv").load("/Sobre/TermoDeUso", function () {
+                $("#ModalTermoUso").modal();
+            });
+        };
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"></script>
+    <!-- bootstrap 4 js -->
+    <script src="~/js/Painel/js/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.7.8/metisMenu.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/slicknav.min.css"></script>
+    <!-- chart js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <!-- highcharts js -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <!-- zingchart js -->
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script>
+        zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+        ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "ee6b7db5b51705a13dc2339db3edaf6d"];
+    </script>
+
+    <script src="~/js/Painel/js/line-chart.js"></script>
+    <script src="~/js/Painel/js/pie-chart.js"></script>
+    <script src="~/js/Painel/js/plugins.js"></script>
+    <script src="~/js/Painel/js/scripts.js"></script>
+    <script src="~/js/Painel/Modais/ModalPainel.js"></script>
+
+
+    <link href="~/css/Painel/Precarregamento.css" rel="stylesheet" />
+
+    <script src="~/js/Projeto/scripProjeto.js"></script>
+    <script src="~/js/Idioma/site.js"></script>
+    <script src="~/js/acionadores.js"></script>
+    <script src="~/js/modais.js"></script>
+
+    <script>
+        [CDATA[
+            $(window).on('load', function () {
+                $('#preloader .inner').fadeOut();
+                $('#preloader').delay(350).fadeOut('slow');
+                $('body').delay(350).css({ 'overflow': 'visible' });
+            })
+        ]]
+    </script>
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
+    <script>
+
+        function FSelConExperimento() {
+
+            $("#ModSelConExperimento").attr({ "style": "display: none;" });
+            $('.modal-backdrop').hide();
+
+
+            $("#SelExpConsultaDiv").load("/TempleteExperimento/SelConExperimento", function () {
+                $("#ModSelConExperimento").modal();
+            })
+        };
+    </script>
+</body>
+</html>
+

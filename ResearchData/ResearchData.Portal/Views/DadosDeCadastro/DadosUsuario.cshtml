@@ -1,0 +1,63 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model ResearchData.Portal.Models.ViewModels.DadosDeCadastro.DadosDeCadastroViewModel
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["Title"] = "DadosUsuario";
+    Layout = "~/Views/Shared/_LayoutPainel.cshtml";
+    ViewData["name"] = _localizador["Nome"];
+    ViewData["datecad"] = _localizador["Data de Cadastro"];
+    ViewData["lastacess"] = _localizador["Último Acesso"];
+    ViewData["alterpass"] = _localizador["Alterar Senha"];
+    ViewData["back"] = _localizador["Voltar"];
+    ViewData["infocad"] = _localizador["Informações de cadastro"];
+    ViewData["Edit Data"] = _localizador["Editar Dados"];
+}
+
+@{
+    if (ViewBag.SenhaFoiAlterada != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @ViewBag.SenhaFoiAlterada
+        </div>
+    }
+}
+
+
+
+        <div style="margin-left:3%; margin-top:3%;">
+            <h3>@ViewData["infocad"]</h3>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    <label class="control-label">@ViewData["name"]</label>
+                </dt>
+                <dd class="col-sm-10">
+                    <label class="control-label">@Model.Nome</label>
+                </dd>
+                <dt class="col-sm-2">
+                    <label asp-for="Email" class="control-label"></label>
+                </dt>
+                <dd class="col-sm-10">
+                    <label class="control-label">@Model.Email</label>
+                </dd>
+                <dt class="col-sm-2">
+                    <label class="control-label">@ViewData["datecad"]</label>
+                </dt>
+                <dd class=" col-sm-10">
+                    <label class="control-label">@Model.DataDeCadastro</label>
+                </dd>
+                <dt class="col-sm-2">
+                    <label class="control-label">@ViewData["lastacess"]</label>
+                </dt>
+                <dd class=" col-sm-10">
+                    <label class="control-label">@Model.DataUltimoAcesso</label>
+                </dd>
+            </dl>
+            <div>
+                <a asp-action="Index" asp-controller="Painel" style="display:none">@ViewData["Edit Data"] |</a>
+                <a asp-action="AlteraSenha" asp-controller="DadosDeCadastro" class="btn btn-primary">@ViewData["alterpass"] </a>
+                <a asp-action="Index" asp-controller="Painel" class="btn btn-secondary">@ViewData["back"]</a>
+            </div>
+        </div>
+

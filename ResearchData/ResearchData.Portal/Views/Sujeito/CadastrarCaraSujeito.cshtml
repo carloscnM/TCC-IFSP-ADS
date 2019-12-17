@@ -1,0 +1,120 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Sujeitos.SelecionarSujeitosViewModel
+@using ResearchData.Portal.Models.Negocio.Sujeitos
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+
+    ViewData["Characteristics register"] = _localizador["Cadastro de Caracteristica"];
+    ViewData["Analysis Title"] = _localizador["Titulo da Análise"];
+    ViewData["Features"] = _localizador["Características"];
+    ViewData["Name"] = _localizador["Nome"];
+    ViewData["Type"] = _localizador["Tipo"];
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Save Changes"] = _localizador["Salvar Alterações"];
+
+
+}
+
+<div class="modal fade" id="CadCaraSujeitos" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:black;" id="TituloModalLongoExemplo">@ViewData["Characteristics register"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div style="height:420px;" class="modal-body">
+                <form asp-action="CadastrarCaraSujeito" asp-controller="Sujeito" method="post" id="cadCaractSujeito">
+                    <div class="form-row" style="align-content:center;">
+                        <div>
+                            <h6 style="float:left; color:black;" for="validationDefault03">@ViewData["Analysis Title"]:  </h6>
+                            <h6 style="float:left; color:black; margin-left:5px;"> @Model.TituloAnalise</h6>
+                        </div>
+                    </div>
+                    <input type="hidden" asp-for="IdAnalise" />
+                    <input type="hidden" asp-for="IdProjeto" />
+                    <hr />
+                    <div style="align-content:center">
+                        <h6 style="color:black;">@ViewData["Features"]</h6>
+                    </div>
+                    <br />
+
+                    <table class="table">
+                        <thead>
+                            <tr class="bg-dark" style="color:white;">
+                                <td>@ViewData["Name"]</td>
+                                <td>@ViewData["Type"]</td>
+                            </tr>
+                    </table>
+                    <div style="width:100%;  height:220px; overflow:auto;">
+
+                        <table class="table table-bordered table-responsive-sm">
+                            <tbody>
+                                @for (int i = 0; i < Model.ListaCaracteristicaSelecionadas.Count; i++)
+                                {
+
+                                    <tr>
+                                        <td>
+
+                                            <div style="margin-right:1%;">
+                                                <p style="float:left;">@Html.CheckBoxFor(model => model.ListaCaracteristicaSelecionadas[i].IsChecked)</p>
+
+
+                                                <p style="float:left">@Model.ListaCaracteristicaSelecionadas[i].Descricao</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                @Model.ListaCaracteristicaSelecionadas[i].Tipo.GetDisplayNameGlobal()
+                                            </div>
+                                        </td>
+                                        @Html.HiddenFor(model => model.ListaCaracteristicaSelecionadas[i].CaracteristicaId)
+                                        @Html.HiddenFor(model => model.ListaCaracteristicaSelecionadas[i].Descricao)
+                                    </tr>
+
+
+
+                                }
+                                @for (int i = 0; i < Model.ListaCaracteristicaNSelecionadas.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div style="padding-top:2%; float:left;">
+                                                @Html.CheckBoxFor(model => model.ListaCaracteristicaNSelecionadas[i].IsChecked)
+                                            </div>
+                                            <div style="margin-left:1%; padding-top:6.5%; float:left;">
+                                                 @Model.ListaCaracteristicaNSelecionadas[i].Descricao
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="padding-top:6%;">
+                                                @Model.ListaCaracteristicaNSelecionadas[i].Tipo.GetDisplayNameGlobal()
+                                            </div>
+                                        </td>
+                                        @Html.HiddenFor(model => model.ListaCaracteristicaNSelecionadas[i].CaracteristicaId)
+                                        @Html.HiddenFor(model => model.ListaCaracteristicaNSelecionadas[i].Descricao)
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                <button type="button" class="btn btn-primary" onclick="submitformCarac()">@ViewData["Save Changes"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function submitformCarac() {
+        document.forms["cadCaractSujeito"].submit();
+    }
+</script>

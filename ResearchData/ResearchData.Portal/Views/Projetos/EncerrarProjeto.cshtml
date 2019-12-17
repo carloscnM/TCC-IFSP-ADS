@@ -1,0 +1,57 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Projetos.DadosSimplesProjetoViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+
+@{
+    Layout = null;
+
+    ViewData["Project Closure Confirmation"] = _localizador["Confirmação de encerramento de projeto"];
+    ViewData["Please confirm Project closure"] = _localizador["Por favor, confirme o encerramento do Projeto"];
+    ViewData["Closing a project will pause all data collection until you open it again!"] = _localizador["Ao encerrar um projeto, será pausada todos as coletas de dados até que você realize a abertura novamente!"];
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Close Project"] = _localizador["Encerrar projeto"];
+
+}
+
+
+
+<div class="modal fade" id="EncerrarProjetoM" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:black;">@ViewData["Project Closure Confirmation"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:250px;">
+                <div class="row">
+                    <div class="col-lg">
+                        <form asp-action="EncerrarProjeto" asp-controller="Projetos" method="post" id="EncerrarProjeto">
+                            <input type="hidden" asp-for="IdProjeto" />
+
+                            <br />
+                            <label>@ViewData["Please confirm Project closure"]</label><br />
+                            <br />
+                            <b style="color:black;">Projeto: </b><p style="color:black;">@Model.TituloProjeto</p>
+                            <br />
+                            <p style="color:darkred;">@ViewData["Closing a project will pause all data collection until you open it again!"]</p>
+                            <br />
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                <button type="button" class="btn btn-primary" onclick="confirmarEncerrarProjeto()">@ViewData["Close Project"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmarEncerrarProjeto() {
+        document.forms["EncerrarProjeto"].submit();
+    };
+</script>

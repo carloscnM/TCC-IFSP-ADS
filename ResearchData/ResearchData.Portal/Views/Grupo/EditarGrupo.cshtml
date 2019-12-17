@@ -1,0 +1,72 @@
+﻿@model ResearchData.Portal.Models.ViewModels.Grupos.GrupoViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizador
+
+@{
+    ViewData["Edit Group"] = _localizador["Editar Grupo"];
+    ViewData["Name"] = _localizador["Nome"];
+    ViewData["Description"] = _localizador["Descrição"];
+    ViewData["Close"] = _localizador["Fechar"];
+    ViewData["Edit"] = _localizador["Alterar"];
+}
+
+
+
+<div class="modal fade" id="modalEditarGrupoM" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:black;">@ViewData["Edit Group"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:250px;">
+                <div class="row">
+                    <div class="col-lg">
+                        <form asp-action="EditarGrupo" asp-controller="Grupo" method="post" id="EditarGrupo">
+                            <div class="form-group">
+                                <label class="col-form-label">@ViewData["Name"]:</label>
+                                <input asp-for="Nome" class="form-control" required minlength="1" id="nomeGrupo"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">@ViewData["Description"]</label>
+                                <textarea asp-for="Descricao" class="form-control" required minlength="3" id="desc"></textarea>
+
+                            </div>
+                            <input type="hidden" asp-for="ProjetoId" />
+                            <input type="hidden" asp-for="AnaliseId" />
+                            <input type="hidden" asp-for="Id" />
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewData["Close"]</button>
+                <button type="button" class="btn btn-primary" onclick="editarGrupoConfir()">@ViewData["Edit"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function editarGrupoConfir() {
+        
+        var nome = document.getElementById('nomeGrupo').value;
+        var x = new Boolean(false);
+
+        if ((nome.length < 1)) {
+            x = false;
+        }
+        else { x = true; }
+
+        debugger;
+
+        if (x == true) {
+            document.forms["EditarGrupo"].submit();
+        }
+
+    };
+</script>
