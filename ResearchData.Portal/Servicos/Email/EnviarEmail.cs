@@ -20,6 +20,8 @@ namespace ResearchData.Portal.Servicos.Email
 
         public Task SendEmailAsync(string email, string assunto, string mensagem)
         {
+            if (String.IsNullOrWhiteSpace(Opcoes.SendGridKey))
+                return null;
             return Executar(Opcoes.SendGridKey, assunto, mensagem, email);
         }
 

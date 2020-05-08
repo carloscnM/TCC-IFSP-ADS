@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using ResearchData.Portal.GerenciamentoUsuario;
 using ResearchData.Portal.Models.Negocio.Analises;
 using ResearchData.Portal.Models.Negocio.Experimentos;
@@ -24,6 +25,9 @@ namespace ResearchData.Portal.Data.Contextos
         {
             base.OnModelCreating(builder);
 
+            
+            
+
             #region MapProjeto
             //Mapeamento Projeto
             builder.Entity<Projeto>().HasKey(p => p.Id);
@@ -42,7 +46,7 @@ namespace ResearchData.Portal.Data.Contextos
 
             builder.Entity<ColaboradorAnalise>().HasOne(ca => ca.UsuarioAplicacao)
                 .WithMany(usu => usu.ColaboradorAnalise)
-                .HasForeignKey(ca => ca.UsuarioAplicacaoId);
+                .HasForeignKey(ca => ca.UsuarioAplicacaoId).OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<ColaboradorAnalise>().HasOne(ca => ca.Analise)
                 .WithMany(ana => ana.ColaboradorAnalise)

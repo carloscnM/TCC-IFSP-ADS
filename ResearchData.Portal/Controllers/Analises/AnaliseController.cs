@@ -182,7 +182,7 @@ namespace ResearchData.Portal.Controllers.Analises
 
                 var assunto = _localizador["Nova analise na sua lista!"].ToString();
 
-                await _enviarEmail.SendEmailAsync(modelo.Email, assunto, mensagem).ConfigureAwait(false);
+                _enviarEmail.SendEmailAsync(modelo.Email, assunto, mensagem).ConfigureAwait(false);
                 msg = 1;
             }
 

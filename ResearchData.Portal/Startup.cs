@@ -98,11 +98,11 @@ namespace ResearchData.Portal
 
 
             services.AddDbContext<RDContextoDaAplicacao>(options =>
-               options.UseMySql(connection)
+               options.UseSqlServer(connection)
             );
 
             services.AddTransient<RDContextoLog>().AddDbContext<RDContextoLog>(options =>
-            options.UseMySql(connection));
+            options.UseSqlServer(connection));
 
 
             #endregion
@@ -289,11 +289,11 @@ namespace ResearchData.Portal
 
             #region InciarRolesDoSistemaEPrimeiroAdministrador
 
-            // InitializeDatabase(app);
+            //InitializeDatabase(app);
 
 
-            CriarRoles(serviceProvider).Wait();
-            CriarAdministrador(serviceProvider).Wait();
+            //CriarRoles(serviceProvider).Wait();
+            //CriarAdministrador(serviceProvider).Wait();
 
             #endregion
 
