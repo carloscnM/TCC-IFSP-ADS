@@ -94,15 +94,24 @@ namespace ResearchData.Portal
 
             #region ConfiguracaoDeBase
 
-            var connection = Configuration["ConnectionStrings:RD:Conexao"];
+            var connection = Configuration["ConnectionStrings:DefaultConnection"];
 
+            //Utilizando SqlServer
+            // services.AddDbContext<RDContextoDaAplicacao>(options =>
+            //    options.UseSqlServer(connection)
+            // );
 
-            services.AddDbContext<RDContextoDaAplicacao>(options =>
-               options.UseSqlServer(connection)
-            );
+            //Utilizando SqLite
+            services.AddDbContext<RDContextoDaAplicacao>(options => options
+                        .UseSqlite(connection, builder => builder
+                        .MigrationsAssembly(typeof(Startup).Assembly.FullName)));
+
+            //Log Sql Server
+            // services.AddTransient<RDContextoLog>().AddDbContext<RDContextoLog>(options =>
+            // options.UseSqlServer(connection));
 
             services.AddTransient<RDContextoLog>().AddDbContext<RDContextoLog>(options =>
-            options.UseSqlServer(connection));
+            options.UseSqlite(connection));
 
 
             #endregion
@@ -289,11 +298,11 @@ namespace ResearchData.Portal
 
             #region InciarRolesDoSistemaEPrimeiroAdministrador
 
-            //InitializeDatabase(app);
+            InitializeDatabase(app);
 
 
-            //CriarRoles(serviceProvider).Wait();
-            //CriarAdministrador(serviceProvider).Wait();
+            CriarRoles(serviceProvider).Wait();
+            CriarAdministrador(serviceProvider).Wait();
 
             #endregion
 
